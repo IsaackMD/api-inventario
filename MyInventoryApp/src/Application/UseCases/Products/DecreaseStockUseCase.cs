@@ -1,4 +1,5 @@
 ﻿using MyInventoryApp.src.Application.Results;
+using MyInventoryApp.src.Domain.Entities;
 using MyInventoryApp.src.Domain.Interfaces;
 
 namespace MyInventoryApp.src.Application.UseCases.Products
@@ -6,10 +7,15 @@ namespace MyInventoryApp.src.Application.UseCases.Products
     public class DecreaseStockUseCase
     {
         private readonly IProductRepository _productRepository;
+        private readonly IStockMovementRepository _movementRepository;
         private readonly IUnitOfWork _unitOfWork;
-        public DecreaseStockUseCase(IProductRepository productRepository, IUnitOfWork unitOfWork)
+        public DecreaseStockUseCase(IProductRepository productRepository,
+            IUnitOfWork unitOfWork,
+            IStockMovementRepository movementRepository
+            )
         {
             _productRepository = productRepository;
+            _movementRepository = movementRepository;
             _unitOfWork = unitOfWork;
         }
         public async Task<Result<String>> ExecuteAsync(Guid productId, int quantity)
@@ -21,6 +27,13 @@ namespace MyInventoryApp.src.Application.UseCases.Products
             try
             {
                 product.DecreaseStock(quantity);
+
+                var movement = new StockMovement(
+                    product.Id,
+                    quantity,
+                    StockMovementType.Out
+                );
+                await _movementRepository.AddAsync(movement);
                 await _productRepository.UpdateAsync(product);
                 await _unitOfWork.CommitAsync();
                 return Result<String>.Success("Stock disminuido correctamente.");
