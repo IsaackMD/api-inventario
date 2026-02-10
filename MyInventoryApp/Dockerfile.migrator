@@ -1,0 +1,13 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0
+WORKDIR /src
+
+# Instalar dotnet-ef
+RUN dotnet tool install --global dotnet-ef --version 8.0.*
+ENV PATH="${PATH}:/root/.dotnet/tools"
+
+# Copiar proyecto
+COPY . .
+RUN dotnet restore
+
+# Ejecutar migraciones
+CMD ["dotnet", "ef", "database", "update", "--project", "MyInventoryApp.csproj", "--no-build"]
