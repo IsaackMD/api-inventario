@@ -8,4 +8,13 @@
         public DateTime MovementDate { get; set; }
         public string MovementType { get; set; } // e.g., "IN" or "OUT"
     }
+
+    public class DataDTO
+    {
+        public int totalProducto { get; set; }
+        public int totalStock { get; set; }
+        public int stockBajos { get; set; }
+
+        public int totalCategorias { get; set; }
+    }
 }

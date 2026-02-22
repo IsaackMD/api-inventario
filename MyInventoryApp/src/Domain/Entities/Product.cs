@@ -9,13 +9,13 @@ namespace MyInventoryApp.src.Domain.Entities
         public string Description { get; private set; }
         public int Stock { get; private set; }
 
-
+        public int StockMin { get; private set; }
         public Guid CategoryId { get; private set; }
         public Category Category { get; private set; }
 
         protected Product() { }
 
-        public Product(string name, string description, int initialStock, Category category)
+        public Product(string name, string description, int initialStock, int minStock, Category category)
         {
             if (initialStock <= 0)
                 throw new InvalidStockException("El stock inicial debe ser mayor a cero.");
@@ -24,6 +24,7 @@ namespace MyInventoryApp.src.Domain.Entities
             Name = name;
             Description = description;
             Stock = initialStock;
+            StockMin = minStock;
             Category = category;
         }
 

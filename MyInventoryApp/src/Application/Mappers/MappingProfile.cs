@@ -12,6 +12,10 @@ namespace MyInventoryApp.src.Application.Mappers
                 .ForMember(
                     dest => dest.categoryName,
                     opt => opt.MapFrom(src => src.Category.Name)
+                 )
+                .ForMember(
+                    dest => dest.stockmin,
+                    opt => opt.MapFrom(src => src.StockMin)
                  );
             CreateMap<ProductoDTO, Product>();
 

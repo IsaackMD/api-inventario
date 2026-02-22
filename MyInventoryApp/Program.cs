@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyInventoryApp.src.Application.Mappers;
 using MyInventoryApp.src.Application.UseCases.Categories;
+using MyInventoryApp.src.Application.UseCases.InfoData;
 using MyInventoryApp.src.Application.UseCases.Products;
 using MyInventoryApp.src.Application.UseCases.Stocks;
 using MyInventoryApp.src.Domain.Interfaces;
@@ -21,6 +22,8 @@ builder.Services.AddDbContext<MyInventoryDbContext>(options =>
 builder.Services.AddScoped<ICategoriaRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IStockMovementRepository, StockMovementRepository>();
+builder.Services.AddScoped<GetInfoRepository>();
+
 builder.Services.AddScoped<CreateProductUseCase>();
 builder.Services.AddScoped<ListProduct>();
 builder.Services.AddScoped<ListStockUseCase>();
@@ -29,6 +32,8 @@ builder.Services.AddScoped<ListCategoryUseCase>();
 builder.Services.AddScoped<CreateCategoryUseCase>();
 builder.Services.AddScoped<IncreaseStockUseCase>();
 builder.Services.AddScoped<DecreaseStockUseCase>();
+builder.Services.AddScoped<GetInfoUseCase>();   
+
 builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
@@ -44,13 +49,15 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:3000") // URL de tu frontend
+        policy.WithOrigins("http://localhost:3000") // SIN slash
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
 
 var app = builder.Build();
+
 
 app.UseCors("AllowFrontend");
 

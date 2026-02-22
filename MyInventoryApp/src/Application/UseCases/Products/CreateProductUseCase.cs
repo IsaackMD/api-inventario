@@ -49,6 +49,7 @@ namespace MyInventoryApp.src.Application.UseCases.Products
                    dto.name,
                    dto.description,
                    dto.stock,
+                   dto.stockmin,
                    category
                 );
                 await _productRepository.AddAsync(product);
