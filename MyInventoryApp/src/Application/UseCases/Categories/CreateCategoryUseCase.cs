@@ -1,4 +1,5 @@
 ﻿using MyInventoryApp.src.Application.DTOs;
+using MyInventoryApp.src.Application.Results;
 using MyInventoryApp.src.Domain.Entities;
 using MyInventoryApp.src.Domain.Interfaces;
 using System.Xml;
@@ -18,19 +19,25 @@ namespace MyInventoryApp.src.Application.UseCases.Categories
             _unitOfWork = unitOfWork;
         }
 
-        public async Task Execute(CategoryDTO dto)
+        public async Task<Result<CategoryDTO>> Execute(CategoryDTO dto)
         {
-            var category = new Category(dto.name);
+            var category = new Category(dto.name,dto?.description);
 
             await _unitOfWork.BeginTransactionAsync();
             try
             {
                 await _categoriaRepository.AddAsync(category);
+                await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.CommitAsync();
+
+
+                dto.Id = category.Id;
+                return Result<CategoryDTO>.Success(dto);
             }
             catch (Exception)
             {
                 await _unitOfWork.RollbackAsync();
-                throw;
+                return Result<CategoryDTO>.Failure("Ocurrio un error durante la creación de la categoria");
             }
             
         }
