@@ -9,7 +9,7 @@ namespace MyInventoryApp.src.API.Controllers
     public class StockController : ControllerBase
     {
         private readonly ListStockUseCase _useCase;
-    
+
         public StockController(
             ListStockUseCase useCase
         )
@@ -35,6 +35,16 @@ namespace MyInventoryApp.src.API.Controllers
             if (!result.IsSuccess)
                 return NotFound(new { message = result.Error });
 
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("LastMovements")]
+        public async Task<IActionResult> GetLastMovements()
+        {
+            var result = await _useCase.ExecuteLastMovements();
+            if (!result.IsSuccess)
+                return NotFound(new { message = result.Error });
             return Ok(result);
         }
     }

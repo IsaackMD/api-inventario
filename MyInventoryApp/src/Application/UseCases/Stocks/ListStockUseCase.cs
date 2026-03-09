@@ -23,10 +23,9 @@ namespace MyInventoryApp.src.Application.UseCases.Stocks
         {
             var stocks = await _repository.GetAllAsync();
             if(!stocks.Any())
-                return Result<IEnumerable<StockDTO>>.Failure("No hay Stocks");
+                return Result<IEnumerable<StockDTO>>.Success([]);
 
-            var Mapper = _mapper.Map<IEnumerable<StockDTO>>(stocks);
-            return Result<IEnumerable<StockDTO>>.Success(Mapper);
+            return Result<IEnumerable<StockDTO>>.Success(stocks);
         }
 
         public async Task<Result<StockDTO>> ExecuteSingle(Guid Id)
@@ -38,5 +37,15 @@ namespace MyInventoryApp.src.Application.UseCases.Stocks
             var stockDTO = _mapper.Map<StockDTO>(stock);
             return Result<StockDTO>.Success(stockDTO);
         }
+
+        public async Task<Result<List<StockDTO>>> ExecuteLastMovements()
+        {
+            var stocks = await _repository.GetLastMovements();
+            if (!stocks.Any())
+                return Result<List<StockDTO>>.Failure("No hay movimientos de stock");
+            var stockDTOs = _mapper.Map<List<StockDTO>>(stocks);
+            return Result<List<StockDTO>>.Success(stockDTOs);
+        }
+
     }
 }

@@ -35,8 +35,20 @@ namespace MyInventoryApp.src.Infraestructure.Persistence.Repositories
             };
         }
 
-
-    
+        public async Task<List<AlertaLowProductDTO>> GetLowProducts()
+        {
+            var lowProducts = await _context.Products
+                .Where(p => p.Stock <= p.StockMin)
+                .Select(p => new AlertaLowProductDTO
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Stock = p.Stock,
+                    StockMin = p.StockMin
+                })
+                .ToListAsync();
+            return lowProducts;
+        }    
     
     }
 

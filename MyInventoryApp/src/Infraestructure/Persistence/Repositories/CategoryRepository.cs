@@ -16,7 +16,6 @@ namespace MyInventoryApp.src.Infraestructure.Persistence.Repositories
         public async Task AddAsync(Category category)
         {
             await _context.AddAsync(category);
-            await _context.SaveChangesAsync();
         }
 
         public async Task<Category> GetByIdAsync(Guid id) =>
@@ -27,8 +26,7 @@ namespace MyInventoryApp.src.Infraestructure.Persistence.Repositories
 
         public async Task UpdateAsync(Category category)
         {
-            _context.Update(category);
-            await _context.SaveChangesAsync();
+             _context.Update(category);
         }
 
         public async Task DeleteAsync(Guid id)
@@ -37,7 +35,6 @@ namespace MyInventoryApp.src.Infraestructure.Persistence.Repositories
             if (category == null) return;
 
             _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
         }
     }
 

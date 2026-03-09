@@ -1,4 +1,5 @@
-﻿using MyInventoryApp.src.Domain.Entities;
+﻿using MyInventoryApp.src.Application.DTOs;
+using MyInventoryApp.src.Domain.Entities;
 
 namespace MyInventoryApp.src.Domain.Interfaces
 {
@@ -6,9 +7,10 @@ namespace MyInventoryApp.src.Domain.Interfaces
     {
         Task AddAsync(StockMovement stock);
         Task<StockMovement?> GetByIdAsync(Guid id);
-        Task<IEnumerable<StockMovement>> GetAllAsync();
+        Task<IEnumerable<StockDTO>> GetAllAsync();
         Task UpdateAsync(StockMovement stock);
         Task DeleteAsync(Guid id);
         Task<StockMovement?> GetStockByProduct(Guid Id);
+        Task<List<StockDTO>> GetLastMovements();
     }
 }

@@ -16,7 +16,7 @@ public class ProductRepository : IProductRepository
     public async Task AddAsync(Product product)
     {
         await _context.Products.AddAsync(product);
-        await _context.SaveChangesAsync();
+
     }
 
     public async Task<Product?> GetByIdAsync(Guid id)
@@ -35,7 +35,6 @@ public class ProductRepository : IProductRepository
     public async Task UpdateAsync(Product product)
     {
         _context.Products.Update(product);
-         await _context.SaveChangesAsync();
     }
     public async Task DeleteAsync(Guid id)
     {
@@ -43,6 +42,5 @@ public class ProductRepository : IProductRepository
         if (product == null) return;
         
        _context.Products.Remove(product);
-        await _context.SaveChangesAsync();
     }
 }

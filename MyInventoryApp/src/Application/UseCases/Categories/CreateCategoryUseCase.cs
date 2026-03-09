@@ -9,17 +9,30 @@ namespace MyInventoryApp.src.Application.UseCases.Categories
     {
 
         private readonly ICategoriaRepository _categoriaRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CreateCategoryUseCase(ICategoriaRepository categoriaRepository)
+        public CreateCategoryUseCase(
+            ICategoriaRepository categoriaRepository, IUnitOfWork unitOfWork    )
         {
             _categoriaRepository = categoriaRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task Execute(CategoryDTO dto)
         {
             var category = new Category(dto.name);
 
-            await _categoriaRepository.AddAsync(category);
+            await _unitOfWork.BeginTransactionAsync();
+            try
+            {
+                await _categoriaRepository.AddAsync(category);
+            }
+            catch (Exception)
+            {
+                await _unitOfWork.RollbackAsync();
+                throw;
+            }
+            
         }
     }
 }

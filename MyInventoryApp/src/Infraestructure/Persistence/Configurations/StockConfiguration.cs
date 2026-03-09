@@ -22,10 +22,10 @@ namespace MyInventoryApp.src.Infraestructure.Persistence.Configurations
             builder.Property(s => s.CreatedAt)
                    .IsRequired();
 
-            builder.HasOne<Product>()
-                .WithMany()
-                .HasForeignKey(s => s.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(s => s.Product)
+               .WithMany()
+               .HasForeignKey(s => s.ProductId)
+               .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

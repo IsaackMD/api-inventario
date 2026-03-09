@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyInventoryApp.src.Application.Mappers;
+using MyInventoryApp.src.Application.UseCases.AlertaLowProductCase;
 using MyInventoryApp.src.Application.UseCases.Categories;
 using MyInventoryApp.src.Application.UseCases.InfoData;
 using MyInventoryApp.src.Application.UseCases.Products;
@@ -25,6 +26,7 @@ builder.Services.AddScoped<IStockMovementRepository, StockMovementRepository>();
 builder.Services.AddScoped<GetInfoRepository>();
 
 builder.Services.AddScoped<CreateProductUseCase>();
+builder.Services.AddScoped<AlertaLowProductCase>();
 builder.Services.AddScoped<ListProduct>();
 builder.Services.AddScoped<ListStockUseCase>();
 builder.Services.AddScoped<GetProductsUseCase>();
@@ -38,7 +40,13 @@ builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 // Controllers
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // ✅ Ignora propiedades con valor null
+        options.JsonSerializerOptions.DefaultIgnoreCondition =
+            System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+    });
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -49,10 +57,17 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:3000") // SIN slash
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+        //policy.WithOrigins(
+        //        "http://localhost:3000",
+        //        "http://192.168.100.144:3000"
+        //      )
+        //      .AllowAnyHeader()
+        //      .AllowAnyMethod();
+        ////.AllowCredentials();
+
+        policy.AllowAnyOrigin()
+          .AllowAnyHeader()
+          .AllowAnyMethod();
     });
 });
 

@@ -34,19 +34,24 @@ namespace MyInventoryApp.src.Application.UseCases.Products
             
 
             await _unitOfWork.BeginTransactionAsync();
-            
+
             try
             {
+                int oldStock = product.Stock;
                 product.IncreaseStock(quantity);
 
                 var movement = new StockMovement(
                     product.Id,
+                    oldStock,
                     quantity,
                     StockMovementType.In
                 );
                 await _movementRepository.AddAsync(movement);
                 await _productRepository.UpdateAsync(product);
-                await _unitOfWork.CommitAsync();
+
+                await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.CommitAsync(); 
+                
                 return Result<String>.Success("Producto Actualizado");
             }
             catch (Exception ex) {

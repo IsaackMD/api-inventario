@@ -25,7 +25,8 @@ namespace MyInventoryApp.src.Application.UseCases.Products
         {
             var products = await _productRepository.GetAllAsync();
             if (!products.Any())
-                return Result<IEnumerable<ProductoDTO>>.Failure("No hay articulos");
+                return Result<IEnumerable<ProductoDTO>>.Success([]);
+
             // Mapeo a DTO usando IMapper
             var Mapper = _mapper.Map<IEnumerable<ProductoDTO>>(products);
 

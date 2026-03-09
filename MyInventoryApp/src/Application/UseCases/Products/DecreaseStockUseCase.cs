@@ -26,15 +26,20 @@ namespace MyInventoryApp.src.Application.UseCases.Products
             await _unitOfWork.BeginTransactionAsync();
             try
             {
+                int oldStock = product.Stock;
                 product.DecreaseStock(quantity);
 
                 var movement = new StockMovement(
                     product.Id,
+                    oldStock,
                     quantity,
                     StockMovementType.Out
                 );
                 await _movementRepository.AddAsync(movement);
                 await _productRepository.UpdateAsync(product);
+
+
+                await _unitOfWork.SaveChangesAsync();
                 await _unitOfWork.CommitAsync();
                 return Result<String>.Success("Stock disminuido correctamente.");
             }

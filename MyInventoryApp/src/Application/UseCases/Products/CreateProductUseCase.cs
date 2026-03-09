@@ -35,9 +35,15 @@ namespace MyInventoryApp.src.Application.UseCases.Products
 
         public async Task<Result<ProductoDTO>> Execute(ProductoDTO dto)
         {
-            var category = await _categoryRepository.GetByIdAsync(dto.CategoryId)
-            ?? throw new Exception("Category not found");
-
+            if(dto.CategoryId == null)
+            {
+                return Result<ProductoDTO>.Failure("CategoryId es requerida");
+            }
+            var category = await _categoryRepository.GetByIdAsync(dto.CategoryId.Value);
+            if (category == null)
+            {
+                return Result<ProductoDTO>.Failure("Categoria No encontrada");
+            }
 
 
 
@@ -48,8 +54,8 @@ namespace MyInventoryApp.src.Application.UseCases.Products
                 (
                    dto.name,
                    dto.description,
-                   dto.stock,
-                   dto.stockmin,
+                   dto.stock ?? 0,
+                   dto.stockmin ?? 0,
                    category
                 );
                 await _productRepository.AddAsync(product);
@@ -57,12 +63,14 @@ namespace MyInventoryApp.src.Application.UseCases.Products
                 var stockMovement = new StockMovement
                 (
                     product.Id,
-                    dto.stock,
+                    0,
+                    dto.stock ?? 0,
                     StockMovementType.In
                 );
 
                 await _stockMovementRepository.AddAsync(stockMovement);
 
+                await _unitOfWork.SaveChangesAsync();
                 await _unitOfWork.CommitAsync();
 
                 var Mapper = _mapper.Map <ProductoDTO>(product);
