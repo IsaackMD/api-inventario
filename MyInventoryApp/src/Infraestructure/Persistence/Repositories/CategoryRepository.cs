@@ -22,7 +22,9 @@ namespace MyInventoryApp.src.Infraestructure.Persistence.Repositories
             await _context.Categories.FindAsync(id);
 
         public async Task<IEnumerable<Category>> GetAllAsync() =>
-            await _context.Categories.ToListAsync();
+            await _context.Categories
+            .Where(c => c.IsDeleted == false)
+            .ToListAsync();
 
         public async Task UpdateAsync(Category category)
         {

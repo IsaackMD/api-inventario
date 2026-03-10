@@ -35,6 +35,7 @@ builder.Services.AddScoped<CreateCategoryUseCase>();
 builder.Services.AddScoped<IncreaseStockUseCase>();
 builder.Services.AddScoped<DecreaseStockUseCase>();
 builder.Services.AddScoped<GetInfoUseCase>();   
+builder.Services.AddScoped<UpdateCategoryUseCase>();
 
 builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 

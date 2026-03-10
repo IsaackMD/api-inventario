@@ -21,7 +21,7 @@ namespace MyInventoryApp.src.Application.UseCases.Categories
 
         public async Task<Result<CategoryDTO>> Execute(CategoryDTO dto)
         {
-            var category = new Category(dto.name,dto?.description);
+            var category = new Category(dto.name,dto?.description,true);
 
             await _unitOfWork.BeginTransactionAsync();
             try
@@ -32,6 +32,7 @@ namespace MyInventoryApp.src.Application.UseCases.Categories
 
 
                 dto.Id = category.Id;
+                
                 return Result<CategoryDTO>.Success(dto);
             }
             catch (Exception)
