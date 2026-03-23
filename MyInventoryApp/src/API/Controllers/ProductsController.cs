@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyInventoryApp.src.Application.DTOs;
 using MyInventoryApp.src.Application.UseCases.Categories;
+using MyInventoryApp.src.Application.UseCases.Notify;
 using MyInventoryApp.src.Application.UseCases.Products;
-using MyInventoryApp.src.Domain.Entities;
 
 namespace MyInventoryApp.src.API.Controllers
 {
@@ -16,12 +16,14 @@ namespace MyInventoryApp.src.API.Controllers
         private readonly GetProductsUseCase _useGetProduct;
         private readonly IncreaseStockUseCase _useIncreaseStock;
         private readonly DecreaseStockUseCase _useDecreaseStock;
+        private readonly NotifyLowStockUseCase _notifyLowStockUseCase;
         public ProductsController(
             CreateProductUseCase useCase,
             ListProduct useCaseList,
             GetProductsUseCase useGetProduct,
             IncreaseStockUseCase useIncreaseStock,
-            DecreaseStockUseCase useDecreaseStock
+            DecreaseStockUseCase useDecreaseStock,
+            NotifyLowStockUseCase notifyLowStockUseCase
             )
         {
             _useCase = useCase;
@@ -29,14 +31,15 @@ namespace MyInventoryApp.src.API.Controllers
             _useGetProduct = useGetProduct;
             _useIncreaseStock = useIncreaseStock;
             _useDecreaseStock = useDecreaseStock;
+            _notifyLowStockUseCase = notifyLowStockUseCase;
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(ProductoDTO dto)
         {
             var result = await _useCase.Execute(dto);
-            if(!result.IsSuccess) 
-                return NotFound(new {message = result.Error});
+            if (!result.IsSuccess)
+                return NotFound(new { message = result.Error });
 
             return Ok(result);
         }
@@ -44,8 +47,8 @@ namespace MyInventoryApp.src.API.Controllers
         public async Task<IActionResult> GetProducts()
         {
             var result = await _useCaseList.ExecuteAsync();
-            if(!result.IsSuccess)
-                return NotFound(new {message = result.Error});
+            if (!result.IsSuccess)
+                return NotFound(new { message = result.Error });
 
             return Ok(result);
         }
@@ -55,19 +58,20 @@ namespace MyInventoryApp.src.API.Controllers
         {
             var result = await _useGetProduct.GetProducts(Id);
 
-            if(!result.IsSuccess)
-                return NotFound(new {message = result.Error});
+            if (!result.IsSuccess)
+                return NotFound(new { message = result.Error });
 
             return Ok(result);
         }
+
 
         [HttpPost]
         [Route("Increase")]
         public async Task<IActionResult> IncreaseProduct([FromBody] ProductRequest request)
         {
             var result = await _useIncreaseStock.ExecuteAsync(request.ProductId, request.Quantity);
-            if(!result.IsSuccess)
-                return NotFound(new {message = result.Error});
+            if (!result.IsSuccess)
+                return NotFound(new { message = result.Error });
 
             return Ok(result);
         }
@@ -81,6 +85,7 @@ namespace MyInventoryApp.src.API.Controllers
             var result = await _useDecreaseStock.ExecuteAsync(request.ProductId, request.Quantity);
             if (!result.IsSuccess)
                 return NotFound(new { message = result.Error });
+            await _notifyLowStockUseCase.Execute(result.Value);
 
             return Ok(result);
         }

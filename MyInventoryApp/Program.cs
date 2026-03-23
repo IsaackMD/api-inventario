@@ -1,8 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MyInventoryApp.FirebaseServices;
 using MyInventoryApp.src.Application.Mappers;
 using MyInventoryApp.src.Application.UseCases.AlertaLowProductCase;
 using MyInventoryApp.src.Application.UseCases.Categories;
+using MyInventoryApp.src.Application.UseCases.Firebase;
 using MyInventoryApp.src.Application.UseCases.InfoData;
+using MyInventoryApp.src.Application.UseCases.Notify;
 using MyInventoryApp.src.Application.UseCases.Products;
 using MyInventoryApp.src.Application.UseCases.Stocks;
 using MyInventoryApp.src.Domain.Interfaces;
@@ -23,6 +26,8 @@ builder.Services.AddDbContext<MyInventoryDbContext>(options =>
 builder.Services.AddScoped<ICategoriaRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IStockMovementRepository, StockMovementRepository>();
+builder.Services.AddScoped<INotificationTokenRepository, NotificationTokenRepository>();
+builder.Services.AddScoped<INotificationService, FirebaseNotificationService>();
 builder.Services.AddScoped<GetInfoRepository>();
 
 builder.Services.AddScoped<CreateProductUseCase>();
@@ -36,6 +41,8 @@ builder.Services.AddScoped<IncreaseStockUseCase>();
 builder.Services.AddScoped<DecreaseStockUseCase>();
 builder.Services.AddScoped<GetInfoUseCase>();   
 builder.Services.AddScoped<UpdateCategoryUseCase>();
+builder.Services.AddScoped<NotifyLowStockUseCase>();
+builder.Services.AddScoped<FirebaseUseCase>();
 
 builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 
