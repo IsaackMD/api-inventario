@@ -1,6 +1,6 @@
-﻿using MyInventoryApp.src.Domain.Interfaces;
-using MyInventoryApp.src.Application.DTOs;
+﻿using MyInventoryApp.src.Application.DTOs;
 using MyInventoryApp.src.Application.Results;
+using MyInventoryApp.src.Domain.Interfaces;
 
 namespace MyInventoryApp.src.Application.UseCases.Categories
 {
@@ -23,12 +23,11 @@ namespace MyInventoryApp.src.Application.UseCases.Categories
             {
                 return Result<string>.Failure("Categoria no encontrada");
             }
-            category.IsDeleted =dto.isDelete;
+            category.IsDeleted = dto.isDelete;
             await _unitOfWork.BeginTransactionAsync();
             try
             {
                 await _categoriaRepository.UpdateAsync(category);
-                await _unitOfWork.SaveChangesAsync();
                 await _unitOfWork.CommitAsync();
                 return Result<string>.Success("Categoria actualizada correctamente");
             }

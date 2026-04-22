@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyInventoryApp.src.Application.DTOs;
 using MyInventoryApp.src.Domain.Entities;
+using MyInventoryApp.src.Domain.Interfaces;
 
 namespace MyInventoryApp.src.Infraestructure.Persistence.Repositories
 {
-    public class GetInfoRepository
+    public class GetInfoRepository : IGetInfoRepository
     {
 
         private readonly MyInventoryDbContext _context;
@@ -48,8 +49,8 @@ namespace MyInventoryApp.src.Infraestructure.Persistence.Repositories
                 })
                 .ToListAsync();
             return lowProducts;
-        }    
-    
+        }
+
     }
 
 }

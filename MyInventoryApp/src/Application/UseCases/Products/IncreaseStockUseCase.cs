@@ -1,9 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MyInventoryApp.src.Application.DTOs;
-using MyInventoryApp.src.Application.Results;
+﻿using MyInventoryApp.src.Application.Results;
 using MyInventoryApp.src.Domain.Entities;
 using MyInventoryApp.src.Domain.Interfaces;
-using MyInventoryApp.src.Infraestructure.Persistence.Repositories;
 
 namespace MyInventoryApp.src.Application.UseCases.Products
 {
@@ -25,13 +22,13 @@ namespace MyInventoryApp.src.Application.UseCases.Products
 
         public async Task<Result<String>> ExecuteAsync(Guid productId, int quantity)
         {
-            
+
             var product = await _productRepository.GetByIdAsync(productId);
-            
+
 
             if (product is null) return Result<String>.Failure("Producto no encontrado");
 
-            
+
 
             await _unitOfWork.BeginTransactionAsync();
 
@@ -49,15 +46,15 @@ namespace MyInventoryApp.src.Application.UseCases.Products
                 await _movementRepository.AddAsync(movement);
                 await _productRepository.UpdateAsync(product);
 
-                await _unitOfWork.SaveChangesAsync();
-                await _unitOfWork.CommitAsync(); 
-                
+                await _unitOfWork.CommitAsync();
+
                 return Result<String>.Success("Producto Actualizado");
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
 
                 await _unitOfWork.RollbackAsync();
-                return Result<String>.Failure(ex.Message);
+                return Result<String>.Failure("Error al aumentar el stock");
             }
         }
     }

@@ -2,7 +2,6 @@
 using MyInventoryApp.src.Application.Results;
 using MyInventoryApp.src.Domain.Entities;
 using MyInventoryApp.src.Domain.Interfaces;
-using System.Xml;
 
 namespace MyInventoryApp.src.Application.UseCases.Categories
 {
@@ -13,7 +12,7 @@ namespace MyInventoryApp.src.Application.UseCases.Categories
         private readonly IUnitOfWork _unitOfWork;
 
         public CreateCategoryUseCase(
-            ICategoriaRepository categoriaRepository, IUnitOfWork unitOfWork    )
+            ICategoriaRepository categoriaRepository, IUnitOfWork unitOfWork)
         {
             _categoriaRepository = categoriaRepository;
             _unitOfWork = unitOfWork;
@@ -21,18 +20,17 @@ namespace MyInventoryApp.src.Application.UseCases.Categories
 
         public async Task<Result<CategoryDTO>> Execute(CategoryDTO dto)
         {
-            var category = new Category(dto.name,dto?.description,true);
+            var category = new Category(dto.name, dto?.description, false);
 
             await _unitOfWork.BeginTransactionAsync();
             try
             {
                 await _categoriaRepository.AddAsync(category);
-                await _unitOfWork.SaveChangesAsync();
                 await _unitOfWork.CommitAsync();
 
 
                 dto.Id = category.Id;
-                
+
                 return Result<CategoryDTO>.Success(dto);
             }
             catch (Exception)
@@ -40,7 +38,7 @@ namespace MyInventoryApp.src.Application.UseCases.Categories
                 await _unitOfWork.RollbackAsync();
                 return Result<CategoryDTO>.Failure("Ocurrio un error durante la creación de la categoria");
             }
-            
+
         }
     }
 }

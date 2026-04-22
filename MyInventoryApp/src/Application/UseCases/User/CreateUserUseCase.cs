@@ -41,7 +41,6 @@ namespace MyInventoryApp.src.Application.UseCases.User
 
                 var createdUser = await _authRepository.CreateUser(newUser);
 
-                await _unitOfWork.SaveChangesAsync();
                 await _unitOfWork.CommitAsync();
 
                 if (createdUser == null)
@@ -54,7 +53,7 @@ namespace MyInventoryApp.src.Application.UseCases.User
             catch (Exception ex)
             {
                 await _unitOfWork.RollbackAsync();
-                return Result<string>.Failure(ex.Message);
+                return Result<string>.Failure("Error al crear el usuario");
             }
         }
     }

@@ -27,7 +27,7 @@ namespace MyInventoryApp.src.Application.UseCases.Products
         {
             var product = await _productRepository.GetByIdAsync(productId);
             if (product is null) return Result<ProductoDTO>.Failure("Product no encontrado.");
-        
+
             await _unitOfWork.BeginTransactionAsync();
             try
             {
@@ -44,15 +44,14 @@ namespace MyInventoryApp.src.Application.UseCases.Products
                 await _productRepository.UpdateAsync(product);
 
 
-                await _unitOfWork.SaveChangesAsync();
                 await _unitOfWork.CommitAsync();
                 var mapper = _mapper.Map<ProductoDTO>(product);
                 return Result<ProductoDTO>.Success(mapper);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await _unitOfWork.RollbackAsync();
-                return Result<ProductoDTO>.Failure($"Error al disminuir el stock: {ex.Message}");
+                return Result<ProductoDTO>.Failure("Error al disminuir el stock");
             }
         }
     }

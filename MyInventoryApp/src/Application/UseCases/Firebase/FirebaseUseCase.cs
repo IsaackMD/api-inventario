@@ -25,7 +25,7 @@ namespace MyInventoryApp.src.Application.UseCases.Firebase
             }
             catch (Exception ex)
             {
-                return Result<string>.Failure($"Error al obtener el token de Firebase: {ex.Message}");
+                return Result<string>.Failure("Error al obtener el token de Firebase");
             }
         }
     }

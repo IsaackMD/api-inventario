@@ -1,14 +1,14 @@
 ﻿using MyInventoryApp.src.Application.DTOs;
 using MyInventoryApp.src.Application.Results;
-using MyInventoryApp.src.Infraestructure.Persistence.Repositories;
+using MyInventoryApp.src.Domain.Interfaces;
 
 namespace MyInventoryApp.src.Application.UseCases.InfoData
 {
     public class GetInfoUseCase
     {
-        private GetInfoRepository _repoInfo { get; set; }
+        private IGetInfoRepository _repoInfo { get; set; }
 
-        public GetInfoUseCase(GetInfoRepository repo)
+        public GetInfoUseCase(IGetInfoRepository repo)
         {
             _repoInfo = repo;
         }

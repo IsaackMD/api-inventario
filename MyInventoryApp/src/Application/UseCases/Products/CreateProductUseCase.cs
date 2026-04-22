@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using MyInventoryApp.src.Application.DTOs;
 using MyInventoryApp.src.Application.Results;
 using MyInventoryApp.src.Domain.Entities;
 using MyInventoryApp.src.Domain.Interfaces;
-using MyInventoryApp.src.Infraestructure.Persistence.Repositories;
 
 namespace MyInventoryApp.src.Application.UseCases.Products
 {
@@ -35,7 +33,7 @@ namespace MyInventoryApp.src.Application.UseCases.Products
 
         public async Task<Result<ProductoDTO>> Execute(ProductoDTO dto)
         {
-            if(dto.CategoryId == null)
+            if (dto.CategoryId == null)
             {
                 return Result<ProductoDTO>.Failure("CategoryId es requerida");
             }
@@ -70,17 +68,16 @@ namespace MyInventoryApp.src.Application.UseCases.Products
 
                 await _stockMovementRepository.AddAsync(stockMovement);
 
-                await _unitOfWork.SaveChangesAsync();
                 await _unitOfWork.CommitAsync();
 
-                var Mapper = _mapper.Map <ProductoDTO>(product);
+                var Mapper = _mapper.Map<ProductoDTO>(product);
 
                 return Result<ProductoDTO>.Success(Mapper);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await _unitOfWork.RollbackAsync();
-                return Result<ProductoDTO>.Failure(ex.Message);
+                return Result<ProductoDTO>.Failure("Error al crear el producto");
             }
         }
     }

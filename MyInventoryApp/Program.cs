@@ -34,7 +34,7 @@ builder.Services.AddScoped<IStockMovementRepository, StockMovementRepository>();
 builder.Services.AddScoped<INotificationTokenRepository, NotificationTokenRepository>();
 builder.Services.AddScoped<INotificationService, FirebaseNotificationService>();
 builder.Services.AddScoped<IAuthRepository, UserRepository>();
-builder.Services.AddScoped<GetInfoRepository>();
+builder.Services.AddScoped<IGetInfoRepository, GetInfoRepository>();
 
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<CreateProductUseCase>();
@@ -180,4 +180,3 @@ app.UseAuthorization();
 app.MapControllers();
 app.Run();
 
-Console.WriteLine(builder.Configuration["Jwt:Secret"]);
