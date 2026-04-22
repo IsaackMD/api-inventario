@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyInventoryApp.src.Application.UseCases.Stocks;
 
 namespace MyInventoryApp.src.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 

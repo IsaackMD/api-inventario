@@ -1,4 +1,5 @@
 ﻿using MyInventoryApp.src.Application.DTOs;
+using MyInventoryApp.src.Application.Results;
 using MyInventoryApp.src.Infraestructure.Persistence.Repositories;
 
 namespace MyInventoryApp.src.Application.UseCases.InfoData
@@ -12,9 +13,16 @@ namespace MyInventoryApp.src.Application.UseCases.InfoData
             _repoInfo = repo;
         }
 
-        public async Task<DataDTO> ExecuteAsync()
+        public async Task<Result<DataDTO>> ExecuteAsync()
         {
-            return await _repoInfo.GetCountDashboard();
+            var results = await _repoInfo.GetCountDashboard();
+
+            if (results == null)
+            {
+                return Result<DataDTO>.Failure("Datos no encontrados");
+            }
+
+            return Result<DataDTO>.Success(results);
         }
     }
 }

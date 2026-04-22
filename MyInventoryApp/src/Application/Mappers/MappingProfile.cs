@@ -7,7 +7,8 @@ namespace MyInventoryApp.src.Application.Mappers
 {
     public class MappingProfile : Profile
     {
-        public MappingProfile() {
+        public MappingProfile()
+        {
             CreateMap<Product, ProductoDTO>()
                 .ForMember(
                     dest => dest.categoryName,
@@ -42,6 +43,13 @@ namespace MyInventoryApp.src.Application.Mappers
                 dest => dest.ProductId,
                 opt => opt.Ignore()  // ← ProductId es private set
             );
+
+
+            CreateMap<User, AuthUserDTO>()
+                .ForMember(
+                    dest => dest.Role,
+                    opt => opt.MapFrom(src => src.RolType)
+                );
 
         }
     }

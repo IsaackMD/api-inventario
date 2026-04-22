@@ -1,12 +1,11 @@
-﻿using MyInventoryApp.src.Application.Results;
-using MyInventoryApp.src.Domain.Entities;
+﻿using MyInventoryApp.src.Domain.Entities;
 
 namespace MyInventoryApp.src.Domain.Interfaces
 {
     public interface IAuthRepository
     {
-        Task<Result<string>> Login(string email, string password);
-        Task<Result<User>> CreateUser(User user);
-
+        Task<User> CreateUser(User user);
+        Task<User?> LoginAsync(string email);
+        Task<User?> ExistEmail(string email);
     }
 }

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyInventoryApp.src.Application.DTOs;
 using MyInventoryApp.src.Application.UseCases.AlertaLowProductCase;
 using MyInventoryApp.src.Application.UseCases.InfoData;
 
 namespace MyInventoryApp.src.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ResumenDashboardController : ControllerBase
@@ -23,9 +25,14 @@ namespace MyInventoryApp.src.API.Controllers
 
 
         [HttpGet]
-        public async Task<DataDTO> GetResumen()
+        public async Task<IActionResult> GetResumen()
         {
-            return await _useCase.ExecuteAsync();
+            var result = await _useCase.ExecuteAsync();
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
 
         [HttpGet("low-products")]

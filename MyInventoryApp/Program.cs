@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MyInventoryApp.FirebaseServices;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MyInventoryApp.src.Application.Mappers;
 using MyInventoryApp.src.Application.UseCases.AlertaLowProductCase;
 using MyInventoryApp.src.Application.UseCases.Categories;
@@ -8,10 +9,14 @@ using MyInventoryApp.src.Application.UseCases.InfoData;
 using MyInventoryApp.src.Application.UseCases.Notify;
 using MyInventoryApp.src.Application.UseCases.Products;
 using MyInventoryApp.src.Application.UseCases.Stocks;
+using MyInventoryApp.src.Application.UseCases.User;
 using MyInventoryApp.src.Domain.Interfaces;
 using MyInventoryApp.src.Infraestructure;
 using MyInventoryApp.src.Infraestructure.Persistence;
 using MyInventoryApp.src.Infraestructure.Persistence.Repositories;
+using MyInventoryApp.src.Infraestructure.Service;
+using MyInventoryApp.src.Infraestructure.Service.Jwt;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,8 +33,10 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IStockMovementRepository, StockMovementRepository>();
 builder.Services.AddScoped<INotificationTokenRepository, NotificationTokenRepository>();
 builder.Services.AddScoped<INotificationService, FirebaseNotificationService>();
+builder.Services.AddScoped<IAuthRepository, UserRepository>();
 builder.Services.AddScoped<GetInfoRepository>();
 
+builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<CreateProductUseCase>();
 builder.Services.AddScoped<AlertaLowProductCase>();
 builder.Services.AddScoped<ListProduct>();
@@ -39,10 +46,14 @@ builder.Services.AddScoped<ListCategoryUseCase>();
 builder.Services.AddScoped<CreateCategoryUseCase>();
 builder.Services.AddScoped<IncreaseStockUseCase>();
 builder.Services.AddScoped<DecreaseStockUseCase>();
-builder.Services.AddScoped<GetInfoUseCase>();   
+builder.Services.AddScoped<GetInfoUseCase>();
 builder.Services.AddScoped<UpdateCategoryUseCase>();
 builder.Services.AddScoped<NotifyLowStockUseCase>();
 builder.Services.AddScoped<FirebaseUseCase>();
+builder.Services.AddScoped<CreateUserUseCase>();
+builder.Services.AddScoped<LoginUseCase>();
+builder.Services.AddScoped<AuthMeUseCase>();
+builder.Services.AddScoped<ITokenValidator, TokenValidator>();
 
 builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 
@@ -73,14 +84,48 @@ builder.Services.AddCors(options =>
         //      .AllowAnyMethod();
         ////.AllowCredentials();
 
-        policy.AllowAnyOrigin()
-          .AllowAnyHeader()
-          .AllowAnyMethod();
+        policy.WithOrigins("http://localhost:5173")
+              .AllowCredentials()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
     });
 });
 
-var app = builder.Build();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"])
+            )
+        };
 
+
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var token = context.Request.Cookies["access_token"];
+
+                if (!string.IsNullOrEmpty(token))
+                {
+                    context.Token = token;
+                }
+
+                return Task.CompletedTask;
+            }
+        };
+    });
+
+builder.Services.AddAuthorization();
+
+var app = builder.Build();
+app.UseRouting();
 
 app.UseCors("AllowFrontend");
 
@@ -128,8 +173,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 app.Run();
+
+Console.WriteLine(builder.Configuration["Jwt:Secret"]);

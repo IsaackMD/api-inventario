@@ -17,6 +17,7 @@ namespace MyInventoryApp.src.Infraestructure.Persistence
         public DbSet<StockMovement> StockMovements => Set<StockMovement>();
         public DbSet<Credenciales> Credenciales => Set<Credenciales>();
         public DbSet<NotificationToken> NotificationToken => Set<NotificationToken>();
+        public DbSet<User> Users => Set<User>();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(MyInventoryDbContext).Assembly);

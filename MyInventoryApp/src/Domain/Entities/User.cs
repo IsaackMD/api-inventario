@@ -7,6 +7,7 @@
         public string Email { get; private set; }
         public string PasswordHash { get; private set; }
         public DateTime CreatedAt { get; private set; }
+        public RolType RolType { get; private set; }
 
         protected User() { }
 
@@ -16,6 +17,7 @@
             Name = name;
             Email = email;
             PasswordHash = passwordHash;
+            RolType = RolType.User; // Asignar rol por defecto
             CreatedAt = DateTime.UtcNow;
         }
         // Método para actualizar el nombre del usuario

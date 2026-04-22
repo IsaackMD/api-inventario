@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyInventoryApp.src.Application.DTOs;
 using MyInventoryApp.src.Application.UseCases.Categories;
 using MyInventoryApp.src.Application.UseCases.Notify;
@@ -6,6 +7,7 @@ using MyInventoryApp.src.Application.UseCases.Products;
 
 namespace MyInventoryApp.src.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
