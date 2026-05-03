@@ -4,7 +4,7 @@ using MyInventoryApp.src.Domain.Interfaces;
 
 namespace MyInventoryApp.src.Infraestructure.Persistence.Repositories
 {
-    public class CategoryRepository : ICategoriaRepository
+    public class CategoryRepository : ICategoryRepository
     {
         private readonly MyInventoryDbContext _context;
 

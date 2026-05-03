@@ -6,10 +6,10 @@ namespace MyInventoryApp.src.Application.UseCases.Categories
 {
     public class UpdateCategoryUseCase
     {
-        private readonly ICategoriaRepository _categoriaRepository;
+        private readonly ICategoryRepository _categoriaRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public UpdateCategoryUseCase(ICategoriaRepository categoriaRepository, IUnitOfWork unitOfWork)
+        public UpdateCategoryUseCase(ICategoryRepository categoriaRepository, IUnitOfWork unitOfWork)
         {
             _categoriaRepository = categoriaRepository;
             _unitOfWork = unitOfWork;
@@ -23,7 +23,7 @@ namespace MyInventoryApp.src.Application.UseCases.Categories
             {
                 return Result<string>.Failure("Categoria no encontrada");
             }
-            category.IsDeleted = dto.isDelete;
+            category.Disable();
             await _unitOfWork.BeginTransactionAsync();
             try
             {

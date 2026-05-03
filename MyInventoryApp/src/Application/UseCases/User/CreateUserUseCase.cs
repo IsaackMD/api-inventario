@@ -27,8 +27,8 @@ namespace MyInventoryApp.src.Application.UseCases.User
 
             try
             {
-                var currentUser = await _authRepository.ExistEmail(userDto.Email);
-                if (currentUser is not null || currentUser != null)
+                var existUser = await _authRepository.ExistEmail(userDto.Email);
+                if (existUser)
                     return Result<string>.Failure("El correo ya esta registrado");
 
                 await _unitOfWork.BeginTransactionAsync();

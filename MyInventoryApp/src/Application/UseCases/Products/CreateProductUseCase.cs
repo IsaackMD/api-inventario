@@ -10,17 +10,19 @@ namespace MyInventoryApp.src.Application.UseCases.Products
     {
 
         private readonly IProductRepository _productRepository;
-        private readonly ICategoriaRepository _categoryRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IStockMovementRepository _stockMovementRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IStockMovementService _stockMovementService;
 
         public CreateProductUseCase(
             IProductRepository productRepository,
-            ICategoriaRepository categoryRepository,
+            ICategoryRepository categoryRepository,
             IStockMovementRepository stockMovementRepository,
             IUnitOfWork unitOfWork,
-            IMapper mapper
+            IMapper mapper,
+            IStockMovementService stockMovementService
             )
         {
             _productRepository = productRepository;
@@ -28,11 +30,16 @@ namespace MyInventoryApp.src.Application.UseCases.Products
             _stockMovementRepository = stockMovementRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _stockMovementService = stockMovementService;
 
         }
 
         public async Task<Result<ProductoDTO>> Execute(ProductoDTO dto)
         {
+            if (dto.stock <= 0)
+                return Result<ProductoDTO>.Failure("Stock no puede ser negativo");
+
+
             if (dto.CategoryId == null)
             {
                 return Result<ProductoDTO>.Failure("CategoryId es requerida");
@@ -42,7 +49,6 @@ namespace MyInventoryApp.src.Application.UseCases.Products
             {
                 return Result<ProductoDTO>.Failure("Categoria No encontrada");
             }
-
 
 
             await _unitOfWork.BeginTransactionAsync();
@@ -58,15 +64,12 @@ namespace MyInventoryApp.src.Application.UseCases.Products
                 );
                 await _productRepository.AddAsync(product);
 
-                var stockMovement = new StockMovement
-                (
-                    product.Id,
+                await _stockMovementService.RegisterAsync(
+                    product,
                     0,
                     dto.stock ?? 0,
                     StockMovementType.In
                 );
-
-                await _stockMovementRepository.AddAsync(stockMovement);
 
                 await _unitOfWork.CommitAsync();
 
@@ -74,7 +77,7 @@ namespace MyInventoryApp.src.Application.UseCases.Products
 
                 return Result<ProductoDTO>.Success(Mapper);
             }
-            catch (Exception ex)
+            catch
             {
                 await _unitOfWork.RollbackAsync();
                 return Result<ProductoDTO>.Failure("Error al crear el producto");

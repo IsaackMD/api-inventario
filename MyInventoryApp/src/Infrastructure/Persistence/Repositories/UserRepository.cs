@@ -23,10 +23,9 @@ namespace MyInventoryApp.src.Infraestructure.Persistence.Repositories
 
         }
 
-        public async Task<User?> ExistEmail(string email)
+        public async Task<bool> ExistEmail(string email)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-            return user;
+            return await _context.Users.AnyAsync(u => u.Email == email);
         }
     }
 }

@@ -1,13 +1,13 @@
 ﻿using MyInventoryApp.src.Application.DTOs;
-using MyInventoryApp.src.Infraestructure.Persistence.Repositories;
+using MyInventoryApp.src.Domain.Interfaces;
 
 namespace MyInventoryApp.src.Application.UseCases.AlertaLowProductCase
 {
     public class AlertaLowProductCase
     {
-        private GetInfoRepository _repoInfo { get; set; }
+        private IGetInfoRepository _repoInfo { get; set; }
 
-        public AlertaLowProductCase(GetInfoRepository repo)
+        public AlertaLowProductCase(IGetInfoRepository repo)
         {
             _repoInfo = repo;
         }

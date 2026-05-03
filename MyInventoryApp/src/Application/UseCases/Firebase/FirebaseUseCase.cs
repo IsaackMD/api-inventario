@@ -16,14 +16,14 @@ namespace MyInventoryApp.src.Application.UseCases.Firebase
         {
             try
             {
-                var token = await _notificationTokenRepository.GetTokeFirebase();
+                var token = await _notificationTokenRepository.GetTokenFirebase();
                 if (string.IsNullOrEmpty(token))
                 {
                     return Result<string>.Failure("No se encontró el token de Firebase.");
                 }
                 return Result<string>.Success(token);
             }
-            catch (Exception ex)
+            catch
             {
                 return Result<string>.Failure("Error al obtener el token de Firebase");
             }

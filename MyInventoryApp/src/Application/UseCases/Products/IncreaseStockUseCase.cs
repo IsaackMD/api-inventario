@@ -9,19 +9,25 @@ namespace MyInventoryApp.src.Application.UseCases.Products
         private readonly IProductRepository _productRepository;
         private readonly IStockMovementRepository _movementRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IStockMovementService _stockMovementService;
 
         public IncreaseStockUseCase(
         IProductRepository productRepository,
         IStockMovementRepository movementRepository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IStockMovementService stockMovementService
+        )
         {
             _productRepository = productRepository;
             _movementRepository = movementRepository;
             _unitOfWork = unitOfWork;
+            _stockMovementService = stockMovementService;
         }
 
         public async Task<Result<String>> ExecuteAsync(Guid productId, int quantity)
         {
+            if (quantity <= 0)
+                return Result<String>.Failure("La cantidad debe ser mayor a cero");
 
             var product = await _productRepository.GetByIdAsync(productId);
 
@@ -37,13 +43,13 @@ namespace MyInventoryApp.src.Application.UseCases.Products
                 int oldStock = product.Stock;
                 product.IncreaseStock(quantity);
 
-                var movement = new StockMovement(
-                    product.Id,
+                await _stockMovementService.RegisterAsync(
+                    product,
                     oldStock,
                     quantity,
                     StockMovementType.In
                 );
-                await _movementRepository.AddAsync(movement);
+
                 await _productRepository.UpdateAsync(product);
 
                 await _unitOfWork.CommitAsync();

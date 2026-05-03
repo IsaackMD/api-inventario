@@ -43,8 +43,9 @@ namespace MyInventoryApp.src.API.Controllers
             if (!result.IsSuccess)
                 return NotFound(new { message = result.Error });
 
-            return Ok(result);
+            return CreatedAtAction(nameof(GetProductoById), new { Id = result.Value.id }, result);
         }
+
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
@@ -58,7 +59,7 @@ namespace MyInventoryApp.src.API.Controllers
         [Route("ById")]
         public async Task<IActionResult> GetProductoById(Guid Id)
         {
-            var result = await _useGetProduct.GetProducts(Id);
+            var result = await _useGetProduct.Execute(Id);
 
             if (!result.IsSuccess)
                 return NotFound(new { message = result.Error });
@@ -68,7 +69,7 @@ namespace MyInventoryApp.src.API.Controllers
 
 
         [HttpPost]
-        [Route("Increase")]
+        [Route("increase")]
         public async Task<IActionResult> IncreaseProduct([FromBody] ProductRequest request)
         {
             var result = await _useIncreaseStock.ExecuteAsync(request.ProductId, request.Quantity);
@@ -79,7 +80,7 @@ namespace MyInventoryApp.src.API.Controllers
         }
 
         [HttpPost]
-        [Route("Decrease")]
+        [Route("decrease")]
         public async Task<IActionResult> DecreaseProduct([FromBody] ProductRequest request)
         {
             Console.WriteLine("ProductoId: " + request.ProductId);

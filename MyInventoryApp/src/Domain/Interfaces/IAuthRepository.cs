@@ -6,6 +6,6 @@ namespace MyInventoryApp.src.Domain.Interfaces
     {
         Task<User> CreateUser(User user);
         Task<User?> LoginAsync(string email);
-        Task<User?> ExistEmail(string email);
+        Task<bool> ExistEmail(string email);
     }
 }

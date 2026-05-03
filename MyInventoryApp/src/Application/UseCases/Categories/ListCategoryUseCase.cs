@@ -8,11 +8,11 @@ namespace MyInventoryApp.src.Application.UseCases.Categories
 {
     public class ListCategoryUseCase
     {
-        private readonly ICategoriaRepository _categoryRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper; // Cambia MappingProfile por IMapper
 
         public ListCategoryUseCase(
-            ICategoriaRepository categoryRepository,
+            ICategoryRepository categoryRepository,
             IMapper mapper // Cambia MappingProfile por IMapper
             )
         {

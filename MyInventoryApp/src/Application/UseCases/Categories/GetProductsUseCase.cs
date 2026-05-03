@@ -19,7 +19,7 @@ namespace MyInventoryApp.src.Application.UseCases.Categories
             _mapper = mapper;
         }
 
-        public async Task<Result<ProductoDTO>> GetProducts(Guid Id)
+        public async Task<Result<ProductoDTO>> Execute(Guid Id)
         {
             if (Id == Guid.Empty) return Result<ProductoDTO>.Failure("El Id esta vacio");
             var Producto = await _repository.GetByIdAsync(Id);

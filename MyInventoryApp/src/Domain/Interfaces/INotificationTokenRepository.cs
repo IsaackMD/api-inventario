@@ -3,6 +3,6 @@
     public interface INotificationTokenRepository
     {
         Task<List<string>> GetAllTokensAsync();
-        Task<string> GetTokeFirebase();
+        Task<string> GetTokenFirebase();
     }
 }

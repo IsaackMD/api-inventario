@@ -17,7 +17,6 @@ namespace MyInventoryApp.src.API.Controllers
         {
             _useCase = useCase;
         }
-
         [HttpGet]
         public async Task<IActionResult> GetTokenFirebase()
         {

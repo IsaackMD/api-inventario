@@ -19,7 +19,7 @@ namespace MyInventoryApp.src.Infraestructure.Persistence.Repositories
                 .ToListAsync();
         }
 
-        public async Task<string> GetTokeFirebase()
+        public async Task<string> GetTokenFirebase()
         {
             var token = await _context.Credenciales
                 .Where(c => c.Code == "vapidKey").

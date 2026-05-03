@@ -22,7 +22,9 @@ public class ProductRepository : IProductRepository
     public async Task<Product?> GetByIdAsync(Guid id)
     {
         return await _context.Products
-             .FirstOrDefaultAsync(p => p.Id == id);
+            .AsNoTracking()
+            .Include(p => p.Category)
+            .FirstOrDefaultAsync(p => p.Id == id);
     }
 
     public async Task<IEnumerable<Product>> GetAllAsync()
@@ -40,7 +42,7 @@ public class ProductRepository : IProductRepository
     {
         var product = await GetByIdAsync(id);
         if (product == null) return;
-        
-       _context.Products.Remove(product);
+
+        _context.Products.Remove(product);
     }
 }

@@ -28,7 +28,7 @@ builder.Services.AddDbContext<MyInventoryDbContext>(options =>
 );
 
 // DI
-builder.Services.AddScoped<ICategoriaRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IStockMovementRepository, StockMovementRepository>();
 builder.Services.AddScoped<INotificationTokenRepository, NotificationTokenRepository>();
@@ -54,6 +54,7 @@ builder.Services.AddScoped<CreateUserUseCase>();
 builder.Services.AddScoped<LoginUseCase>();
 builder.Services.AddScoped<AuthMeUseCase>();
 builder.Services.AddScoped<ITokenValidator, TokenValidator>();
+builder.Services.AddScoped<IStockMovementService, StockMovementService>();
 
 builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 

@@ -8,11 +8,11 @@ namespace MyInventoryApp.src.Application.UseCases.Categories
     public class CreateCategoryUseCase
     {
 
-        private readonly ICategoriaRepository _categoriaRepository;
+        private readonly ICategoryRepository _categoriaRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public CreateCategoryUseCase(
-            ICategoriaRepository categoriaRepository, IUnitOfWork unitOfWork)
+            ICategoryRepository categoriaRepository, IUnitOfWork unitOfWork)
         {
             _categoriaRepository = categoriaRepository;
             _unitOfWork = unitOfWork;

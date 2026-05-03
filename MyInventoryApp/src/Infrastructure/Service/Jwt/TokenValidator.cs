@@ -10,7 +10,7 @@ namespace MyInventoryApp.src.Infraestructure.Service.Jwt
 
         public TokenValidator(IConfiguration configuration) : base(configuration) { }
 
-        public ClaimsPrincipal? Validater(string token)
+        public ClaimsPrincipal? Validate(string token)
         {
             try
             {

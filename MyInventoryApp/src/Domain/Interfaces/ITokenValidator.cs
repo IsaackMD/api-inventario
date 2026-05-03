@@ -4,6 +4,6 @@ namespace MyInventoryApp.src.Domain.Interfaces
 {
     public interface ITokenValidator
     {
-        public ClaimsPrincipal? Validater(string token);
+        public ClaimsPrincipal? Validate(string token);
     }
 }

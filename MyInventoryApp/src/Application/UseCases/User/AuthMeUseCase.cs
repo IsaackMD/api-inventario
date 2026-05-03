@@ -20,7 +20,7 @@ namespace MyInventoryApp.src.Application.UseCases.User
             if (string.IsNullOrEmpty(token))
                 return Result<object>.Failure("Token es requerido.");
 
-            var claims = _tokenValidator.Validater(token);
+            var claims = _tokenValidator.Validate(token);
 
             if (claims == null)
                 return Result<object>.Failure("Token Invalido.");

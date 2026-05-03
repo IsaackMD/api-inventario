@@ -2,7 +2,7 @@
 
 namespace MyInventoryApp.src.Domain.Interfaces
 {
-    public interface ICategoriaRepository
+    public interface ICategoryRepository
     {
         Task AddAsync(Category category);
         Task<Category?> GetByIdAsync(Guid id);
