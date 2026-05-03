@@ -26,14 +26,14 @@ namespace MyInventoryApp.src.Application.UseCases.Products
             _mapper = mapper;
             _stockMovementService = stockMovementService;
         }
-        public async Task<Result<ProductoDTO>> ExecuteAsync(Guid productId, int quantity)
+        public async Task<Result<ProductDTO>> ExecuteAsync(Guid productId, int quantity)
         {
             if (quantity <= 0)
-                return Result<ProductoDTO>.Failure("La cantidad debe ser mayor a cero.");
+                return Result<ProductDTO>.Failure("La cantidad debe ser mayor a cero.");
 
             var product = await _productRepository.GetByIdAsync(productId);
             if (product is null)
-                return Result<ProductoDTO>.Failure("Product no encontrado.");
+                return Result<ProductDTO>.Failure("Product no encontrado.");
 
             await _unitOfWork.BeginTransactionAsync();
             try
@@ -53,12 +53,12 @@ namespace MyInventoryApp.src.Application.UseCases.Products
 
                 await _unitOfWork.CommitAsync();
 
-                return Result<ProductoDTO>.Success(_mapper.Map<ProductoDTO>(product));
+                return Result<ProductDTO>.Success(_mapper.Map<ProductDTO>(product));
             }
             catch
             {
                 await _unitOfWork.RollbackAsync();
-                return Result<ProductoDTO>.Failure("Error al disminuir el stock");
+                return Result<ProductDTO>.Failure("Error al disminuir el stock");
             }
         }
     }

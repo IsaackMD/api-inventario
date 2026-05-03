@@ -2,7 +2,7 @@
 using MyInventoryApp.src.Domain.Entities;
 using MyInventoryApp.src.Domain.Interfaces;
 
-namespace MyInventoryApp.src.Infraestructure.Persistence.Repositories
+namespace MyInventoryApp.src.Infrastructure.Persistence.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
@@ -28,7 +28,7 @@ namespace MyInventoryApp.src.Infraestructure.Persistence.Repositories
 
         public async Task UpdateAsync(Category category)
         {
-             _context.Update(category);
+            _context.Update(category);
         }
 
         public async Task DeleteAsync(Guid id)

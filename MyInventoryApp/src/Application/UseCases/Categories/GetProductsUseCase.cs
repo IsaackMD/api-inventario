@@ -19,15 +19,15 @@ namespace MyInventoryApp.src.Application.UseCases.Categories
             _mapper = mapper;
         }
 
-        public async Task<Result<ProductoDTO>> Execute(Guid Id)
+        public async Task<Result<ProductDTO>> Execute(Guid Id)
         {
-            if (Id == Guid.Empty) return Result<ProductoDTO>.Failure("El Id esta vacio");
+            if (Id == Guid.Empty) return Result<ProductDTO>.Failure("El Id esta vacio");
             var Producto = await _repository.GetByIdAsync(Id);
 
-            if(Producto == null ) return Result<ProductoDTO>.Failure("No existe el producto");
-            var mapping = _mapper.Map<ProductoDTO>(Producto);
+            if(Producto == null ) return Result<ProductDTO>.Failure("No existe el producto");
+            var mapping = _mapper.Map<ProductDTO>(Producto);
 
-            return Result<ProductoDTO>.Success(mapping);
+            return Result<ProductDTO>.Success(mapping);
         }
     }
 }

@@ -2,7 +2,7 @@
 using MyInventoryApp.src.Application.DTOs;
 using MyInventoryApp.src.Application.Results;
 using MyInventoryApp.src.Domain.Interfaces;
-using MyInventoryApp.src.Infraestructure.Service.Jwt;
+using MyInventoryApp.src.Infrastructure.Service.Jwt;
 using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace MyInventoryApp.src.Application.UseCases.User

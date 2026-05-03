@@ -1,7 +1,7 @@
 ﻿using MyInventoryApp.src.Domain.Entities;
 using MyInventoryApp.src.Domain.Interfaces;
 
-namespace MyInventoryApp.src.Infraestructure.Service
+namespace MyInventoryApp.src.Infrastructure.Service
 {
     public class StockMovementService : IStockMovementService
     {

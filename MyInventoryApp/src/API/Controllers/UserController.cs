@@ -58,18 +58,18 @@ namespace MyInventoryApp.src.API.Controllers
 
         [HttpGet]
         [Route("auth/me")]
-        public IActionResult AuthMe()
+        public async Task<IActionResult> AuthMe()
         {
             var token = Request.Cookies["access_token"];
 
-            var result = _authMeUseCase.Execute(token);
+            var result = await _authMeUseCase.Execute(token);
 
-            if (!result.Result.IsSuccess)
+            if (!result.IsSuccess)
             {
                 return BadRequest(result);
             }
 
-            return Ok(result.Result);
+            return Ok(result.Value);
         }
     }
 }

@@ -3,7 +3,7 @@ using MyInventoryApp.src.Application.DTOs;
 using MyInventoryApp.src.Domain.Entities;
 using MyInventoryApp.src.Domain.Interfaces;
 
-namespace MyInventoryApp.src.Infraestructure.Persistence.Repositories
+namespace MyInventoryApp.src.Infrastructure.Persistence.Repositories
 {
     public class StockMovementRepository : IStockMovementRepository
     {
@@ -34,11 +34,11 @@ namespace MyInventoryApp.src.Infraestructure.Persistence.Repositories
                 {
                     Id = s.Id,
                     ProductId = s.ProductId,
-                    Producto = new ProductoDTO
+                    Product = new ProductDTO
                     {
-                        id = s.Product.Id,
-                        name = s.Product.Name,
-                        description = s.Product.Description,
+                        Id = s.Product.Id,
+                        Name = s.Product.Name,
+                        Description = s.Product.Description,
                     },
                     OldStock = s.OldStock,
                     Quantity = s.Quantity,
@@ -76,11 +76,11 @@ namespace MyInventoryApp.src.Infraestructure.Persistence.Repositories
                 {
                     Id = s.Id,
                     ProductId = s.ProductId,
-                    Producto = new ProductoDTO
+                    Product = new ProductDTO
                     {
-                        id = s.Product.Id,
-                        name = s.Product.Name,
-                        description = s.Product.Description
+                        Id = s.Product.Id,
+                        Name = s.Product.Name,
+                        Description = s.Product.Description
                     },
                     Quantity = s.Quantity,
                     MovementType = s.Type.ToString(),

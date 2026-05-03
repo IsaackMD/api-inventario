@@ -1,7 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace MyInventoryApp.src.Infraestructure.Service.Jwt
+namespace MyInventoryApp.src.Infrastructure.Service.Jwt
 {
     public abstract class JwtBaseService
     {

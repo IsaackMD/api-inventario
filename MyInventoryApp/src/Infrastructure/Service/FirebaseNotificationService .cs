@@ -1,7 +1,7 @@
 ﻿using FirebaseAdmin.Messaging;
 using MyInventoryApp.src.Domain.Interfaces;
 
-namespace MyInventoryApp.src.Infraestructure.Service
+namespace MyInventoryApp.src.Infrastructure.Service
 {
     public class FirebaseNotificationService : INotificationService
     {

@@ -27,13 +27,22 @@ namespace MyInventoryApp.src.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CategoryDTO dto)
         {
-            await _useCase.Execute(dto);
-            return Ok();
+            var result = await _useCase.Execute(dto);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Error);
+            }
+            return CreatedAtAction(nameof(GetCategories), new { Id = result.Value.Id }, result.Value);
         }
         [HttpGet]
-        public async Task<IEnumerable<CategoryDTO>> GetCategories()
+        public async Task<IActionResult> GetCategories()
         {
-            return await _useListCategory.ExecuteAsync();
+            var result = await _useListCategory.ExecuteAsync();
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
         }
 
         [HttpPut]

@@ -3,7 +3,7 @@ using MyInventoryApp.src.Domain.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace MyInventoryApp.src.Infraestructure.Service.Jwt
+namespace MyInventoryApp.src.Infrastructure.Service.Jwt
 {
     public class TokenValidator : JwtBaseService, ITokenValidator
     {

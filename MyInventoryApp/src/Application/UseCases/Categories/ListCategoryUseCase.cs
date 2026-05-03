@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using MyInventoryApp.src.Application.DTOs;
-using MyInventoryApp.src.Application.Mappers;
+using MyInventoryApp.src.Application.Results;
 using MyInventoryApp.src.Domain.Interfaces;
-using System.Data;
 
 namespace MyInventoryApp.src.Application.UseCases.Categories
 {
@@ -20,12 +19,14 @@ namespace MyInventoryApp.src.Application.UseCases.Categories
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CategoryDTO>> ExecuteAsync()
+        public async Task<Result<IEnumerable<CategoryDTO>>> ExecuteAsync()
         {
             var categories = await _categoryRepository.GetAllAsync();
 
             // Mapeo a DTO usando IMapper
-            return _mapper.Map<IEnumerable<CategoryDTO>>(categories);
+            return Result<IEnumerable<CategoryDTO>>.Success(
+                _mapper.Map<IEnumerable<CategoryDTO>>(categories)
+                );
         }
     }
 }

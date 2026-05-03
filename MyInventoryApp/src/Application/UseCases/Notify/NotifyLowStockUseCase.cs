@@ -17,9 +17,9 @@ namespace MyInventoryApp.src.Application.UseCases.Notify
             _notificationService = notificationService;
         }
 
-        public async Task Execute(ProductoDTO product)
+        public async Task Execute(ProductDTO product)
         {
-            if (product.stock > product.stockmin)
+            if (product.Stock > product.Stockmin)
                 return;
 
             var tokens = await _tokenRepository.GetAllTokensAsync();
@@ -29,7 +29,7 @@ namespace MyInventoryApp.src.Application.UseCases.Notify
                 await _notificationService.SendAsync(
                     token,
                     "Stock bajo",
-                    $"El producto {product.name} tiene poco stock"
+                    $"El producto {product.Name} tiene poco stock"
                 );
             }
         }

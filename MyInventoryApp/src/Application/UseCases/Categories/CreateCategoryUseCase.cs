@@ -20,7 +20,7 @@ namespace MyInventoryApp.src.Application.UseCases.Categories
 
         public async Task<Result<CategoryDTO>> Execute(CategoryDTO dto)
         {
-            var category = new Category(dto.name, dto?.description, false);
+            var category = new Category(dto.Name, dto?.Description, false);
 
             await _unitOfWork.BeginTransactionAsync();
             try

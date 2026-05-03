@@ -2,7 +2,7 @@
 using MyInventoryApp.src.Domain.Entities;
 using MyInventoryApp.src.Domain.Interfaces;
 
-namespace MyInventoryApp.src.Infraestructure.Persistence.Repositories
+namespace MyInventoryApp.src.Infrastructure.Persistence.Repositories
 {
     public class UserRepository : IAuthRepository
     {

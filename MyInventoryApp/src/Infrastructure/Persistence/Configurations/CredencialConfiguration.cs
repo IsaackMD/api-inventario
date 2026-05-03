@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyInventoryApp.src.Domain.Entities;
 
-namespace MyInventoryApp.src.Infraestructure.Persistence.Configurations
+namespace MyInventoryApp.src.Infrastructure.Persistence.Configurations
 {
     public class CredencialConfiguration: IEntityTypeConfiguration<Credenciales>
     {

@@ -37,13 +37,13 @@ namespace MyInventoryApp.src.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProductoDTO dto)
+        public async Task<IActionResult> Create(ProductDTO dto)
         {
             var result = await _useCase.Execute(dto);
             if (!result.IsSuccess)
                 return NotFound(new { message = result.Error });
 
-            return CreatedAtAction(nameof(GetProductoById), new { Id = result.Value.id }, result);
+            return CreatedAtAction(nameof(GetProductoById), new { Id = result.Value.Id }, result);
         }
 
         [HttpGet]
@@ -83,7 +83,6 @@ namespace MyInventoryApp.src.API.Controllers
         [Route("decrease")]
         public async Task<IActionResult> DecreaseProduct([FromBody] ProductRequest request)
         {
-            Console.WriteLine("ProductoId: " + request.ProductId);
 
             var result = await _useDecreaseStock.ExecuteAsync(request.ProductId, request.Quantity);
             if (!result.IsSuccess)

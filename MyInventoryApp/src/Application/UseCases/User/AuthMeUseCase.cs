@@ -1,4 +1,5 @@
-﻿using MyInventoryApp.src.Application.Results;
+﻿using MyInventoryApp.src.Application.DTOs;
+using MyInventoryApp.src.Application.Results;
 using MyInventoryApp.src.Domain.Interfaces;
 using System.Security.Claims;
 
@@ -14,25 +15,25 @@ namespace MyInventoryApp.src.Application.UseCases.User
             _tokenValidator = tokenValidator;
         }
 
-        public async Task<Result<object>> Execute(string token)
+        public async Task<Result<UserClaims>> Execute(string token)
         {
 
             if (string.IsNullOrEmpty(token))
-                return Result<object>.Failure("Token es requerido.");
+                return Result<UserClaims>.Failure("Token es requerido.");
 
             var claims = _tokenValidator.Validate(token);
 
             if (claims == null)
-                return Result<object>.Failure("Token Invalido.");
+                return Result<UserClaims>.Failure("Token Invalido.");
 
-            var user = new
+            var user = new UserClaims
             {
-                userId = claims.FindFirst(ClaimTypes.NameIdentifier)?.Value,
-                email = claims.FindFirst(ClaimTypes.Email)?.Value,
-                name = claims.FindFirst(ClaimTypes.Name)?.Value
+                userId = claims.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty,
+                email = claims.FindFirst(ClaimTypes.Email)?.Value ?? string.Empty,
+                name = claims.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty
             };
 
-            return Result<object>.Success(user);
+            return Result<UserClaims>.Success(user);
 
         }
     }

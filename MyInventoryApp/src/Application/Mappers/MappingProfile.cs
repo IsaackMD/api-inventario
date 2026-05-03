@@ -9,16 +9,16 @@ namespace MyInventoryApp.src.Application.Mappers
     {
         public MappingProfile()
         {
-            CreateMap<Product, ProductoDTO>()
+            CreateMap<Product, ProductDTO>()
                 .ForMember(
-                    dest => dest.categoryName,
+                    dest => dest.CategoryName,
                     opt => opt.MapFrom(src => src.Category.Name)
                  )
                 .ForMember(
-                    dest => dest.stockmin,
+                    dest => dest.Stockmin,
                     opt => opt.MapFrom(src => src.StockMin)
                  );
-            CreateMap<ProductoDTO, Product>();
+            CreateMap<ProductDTO, Product>();
 
             // Mapper Categories
             CreateMap<Category, CategoryDTO>();

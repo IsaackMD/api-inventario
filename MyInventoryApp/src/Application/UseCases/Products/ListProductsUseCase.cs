@@ -21,16 +21,16 @@ namespace MyInventoryApp.src.Application.UseCases.Products
             _mapper = mapper;
         }
 
-        public async Task<Result<IEnumerable<ProductoDTO>>> ExecuteAsync()
+        public async Task<Result<IEnumerable<ProductDTO>>> ExecuteAsync()
         {
             var products = await _productRepository.GetAllAsync();
             if (!products.Any())
-                return Result<IEnumerable<ProductoDTO>>.Success([]);
+                return Result<IEnumerable<ProductDTO>>.Success([]);
 
             // Mapeo a DTO usando IMapper
-            var Mapper = _mapper.Map<IEnumerable<ProductoDTO>>(products);
+            var Mapper = _mapper.Map<IEnumerable<ProductDTO>>(products);
 
-            return Result<IEnumerable<ProductoDTO>>.Success(Mapper);
+            return Result<IEnumerable<ProductDTO>>.Success(Mapper);
         }
     }
 }

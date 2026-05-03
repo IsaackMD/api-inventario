@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyInventoryApp.src.Domain.Entities;
-using MyInventoryApp.src.Infraestructure.Persistence.Configurations;
+using MyInventoryApp.src.Infrastructure.Persistence.Configurations;
 
 
-namespace MyInventoryApp.src.Infraestructure.Persistence
+namespace MyInventoryApp.src.Infrastructure.Persistence
 {
     public class MyInventoryDbContext : DbContext
     {

@@ -12,7 +12,7 @@ namespace MyInventoryApp.src.Application.UseCases.AlertaLowProductCase
             _repoInfo = repo;
         }
 
-        public async Task<List<AlertaLowProductDTO>> ExecuteAsync()
+        public async Task<List<AlertLowProductDTO>> ExecuteAsync()
         {
             return await _repoInfo.GetLowProducts();
         }

@@ -3,7 +3,7 @@ using MyInventoryApp.src.Application.DTOs;
 using MyInventoryApp.src.Domain.Entities;
 using MyInventoryApp.src.Domain.Interfaces;
 
-namespace MyInventoryApp.src.Infraestructure.Persistence.Repositories
+namespace MyInventoryApp.src.Infrastructure.Persistence.Repositories
 {
     public class GetInfoRepository : IGetInfoRepository
     {
@@ -29,18 +29,18 @@ namespace MyInventoryApp.src.Infraestructure.Persistence.Repositories
 
             return new DataDTO
             {
-                totalProducto = totalProductos,
-                totalStock = totalStock,
-                stockBajos = stockBajos,
-                totalCategorias = totalCategorias
+                TotalProducto = totalProductos,
+                TotalStock = totalStock,
+                StockBajos = stockBajos,
+                TotalCategorias = totalCategorias
             };
         }
 
-        public async Task<List<AlertaLowProductDTO>> GetLowProducts()
+        public async Task<List<AlertLowProductDTO>> GetLowProducts()
         {
             var lowProducts = await _context.Products
                 .Where(p => p.Stock <= p.StockMin)
-                .Select(p => new AlertaLowProductDTO
+                .Select(p => new AlertLowProductDTO
                 {
                     Id = p.Id,
                     Name = p.Name,

@@ -11,11 +11,11 @@ using MyInventoryApp.src.Application.UseCases.Products;
 using MyInventoryApp.src.Application.UseCases.Stocks;
 using MyInventoryApp.src.Application.UseCases.User;
 using MyInventoryApp.src.Domain.Interfaces;
-using MyInventoryApp.src.Infraestructure;
-using MyInventoryApp.src.Infraestructure.Persistence;
-using MyInventoryApp.src.Infraestructure.Persistence.Repositories;
-using MyInventoryApp.src.Infraestructure.Service;
-using MyInventoryApp.src.Infraestructure.Service.Jwt;
+using MyInventoryApp.src.Infrastructure;
+using MyInventoryApp.src.Infrastructure.Persistence;
+using MyInventoryApp.src.Infrastructure.Persistence.Repositories;
+using MyInventoryApp.src.Infrastructure.Service;
+using MyInventoryApp.src.Infrastructure.Service.Jwt;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);

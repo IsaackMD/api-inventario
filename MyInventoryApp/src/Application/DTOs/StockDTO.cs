@@ -1,11 +1,11 @@
 ﻿namespace MyInventoryApp.src.Application.DTOs
 {
-   
+
     public class StockDTO
     {
         public Guid Id { get; set; }
         public Guid ProductId { get; set; }
-        public ProductoDTO Producto { get; set; }
+        public ProductDTO Product { get; set; }
         public int OldStock { get; set; }
         public int Quantity { get; set; }
         public DateTime MovementDate { get; set; }
@@ -14,14 +14,14 @@
 
     public class DataDTO
     {
-        public int totalProducto { get; set; }
-        public int totalStock { get; set; }
-        public int stockBajos { get; set; }
+        public int TotalProducto { get; set; }
+        public int TotalStock { get; set; }
+        public int StockBajos { get; set; }
 
-        public int totalCategorias { get; set; }
+        public int TotalCategorias { get; set; }
     }
 
-    public class AlertaLowProductDTO
+    public class AlertLowProductDTO
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

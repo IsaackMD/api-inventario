@@ -2,7 +2,7 @@
 using MyInventoryApp.src.Domain.Interfaces;
 using System;
 
-namespace MyInventoryApp.src.Infraestructure.Persistence.Repositories
+namespace MyInventoryApp.src.Infrastructure.Persistence.Repositories
 {
     public class NotificationTokenRepository : INotificationTokenRepository
     {

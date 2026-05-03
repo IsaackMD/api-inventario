@@ -36,7 +36,7 @@ namespace MyInventoryApp.src.API.Controllers
         }
 
         [HttpGet("low-products")]
-        public async Task<List<AlertaLowProductDTO>> GetLowProducts()
+        public async Task<List<AlertLowProductDTO>> GetLowProducts()
         {
             return await _lowProductsUseCase.ExecuteAsync();
         }

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using MyInventoryApp.src.Domain.Interfaces;
-using MyInventoryApp.src.Infraestructure.Persistence;
+using MyInventoryApp.src.Infrastructure.Persistence;
 
-namespace MyInventoryApp.src.Infraestructure
+namespace MyInventoryApp.src.Infrastructure
 {
     public class EfUnitOfWork : IUnitOfWork
     {
@@ -13,10 +13,7 @@ namespace MyInventoryApp.src.Infraestructure
         {
             _context = context;
         }
-        public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            await _context.SaveChangesAsync(cancellationToken);
-        }
+
         public async Task BeginTransactionAsync()
         {
             _transaction = await _context.Database.BeginTransactionAsync();
