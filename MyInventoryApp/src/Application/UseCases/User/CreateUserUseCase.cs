@@ -20,9 +20,11 @@ namespace MyInventoryApp.src.Application.UseCases.User
         }
         public async Task<Result<UserDTO>> Execute(UserDTO userDto)
         {
-
+            if(userDto.Email is null)
+                return Result<UserDTO>.Failure("El correo es requerido");
             try
             {
+
                 var existUser = await _authRepository.ExistEmail(userDto.Email);
                 if (existUser)
                     return Result<UserDTO>.Failure("El correo ya esta registrado");

@@ -36,9 +36,10 @@ namespace MyInventoryApp.src.Infrastructure.Persistence.Repositories
             };
         }
 
-        public async Task<List<AlertLowProductDTO>> GetLowProducts()
+        public async Task<IEnumerable<AlertLowProductDTO>> GetLowProducts()
         {
             var lowProducts = await _context.Products
+                .AsNoTracking()
                 .Where(p => p.Stock <= p.StockMin)
                 .Select(p => new AlertLowProductDTO
                 {

@@ -1,6 +1,8 @@
-﻿namespace MyInventoryApp.src.Application.DTOs
+﻿using MyInventoryApp.src.Domain.Interfaces;
+
+namespace MyInventoryApp.src.Application.DTOs
 {
-    public class ProductDTO
+    public class ProductDTO : IEntity
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

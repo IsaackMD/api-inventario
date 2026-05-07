@@ -5,6 +5,6 @@ namespace MyInventoryApp.src.Domain.Interfaces
     public interface IGetInfoRepository
     {
         Task<DataDTO> GetCountDashboard();
-        Task<List<AlertLowProductDTO>> GetLowProducts();
+        Task<IEnumerable<AlertLowProductDTO>> GetLowProducts();
     }
 }

@@ -4,7 +4,7 @@
     {
         public bool IsSuccess { get; }
         public string ? Error { get; }
-        public T Value { get; }
+        public T? Value { get; }
 
         private Result(bool success, T? value, string? error)
         {

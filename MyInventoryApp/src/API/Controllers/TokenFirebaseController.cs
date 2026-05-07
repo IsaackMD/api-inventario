@@ -7,7 +7,7 @@ namespace MyInventoryApp.src.API.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class TokenFirebaseController : ControllerBase
+    public class TokenFirebaseController : BaseController
     {
         private readonly FirebaseUseCase _useCase;
 
@@ -21,11 +21,7 @@ namespace MyInventoryApp.src.API.Controllers
         public async Task<IActionResult> GetTokenFirebase()
         {
             var result = await _useCase.Execute();
-            if (!result.IsSuccess)
-            {
-                return BadRequest(result.Error);
-            }
-            return Ok(result);
+            return FromResult(result);
         }
     }
 }

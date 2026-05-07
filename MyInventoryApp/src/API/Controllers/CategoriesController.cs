@@ -8,7 +8,7 @@ namespace MyInventoryApp.src.API.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class CategoriesController : BaseController
     {
         private readonly CreateCategoryUseCase _useCase;
         private readonly UpdateCategoryUseCase _useUpdateCategory;
@@ -28,21 +28,13 @@ namespace MyInventoryApp.src.API.Controllers
         public async Task<IActionResult> Create(CategoryDTO dto)
         {
             var result = await _useCase.Execute(dto);
-            if (!result.IsSuccess)
-            {
-                return BadRequest(result.Error);
-            }
-            return CreatedAtAction(nameof(GetCategories), new { Id = result.Value.Id }, result.Value);
+            return FromCreated(result, nameof(GetCategories));
         }
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
             var result = await _useListCategory.ExecuteAsync();
-            if (!result.IsSuccess)
-            {
-                return BadRequest(result.Error);
-            }
-            return Ok(result.Value);
+            return FromResult(result);
         }
 
         [HttpPut]
@@ -51,11 +43,7 @@ namespace MyInventoryApp.src.API.Controllers
         {
             var result = await _useUpdateCategory.ExecuteStatus(dto);
 
-            if (!result.IsSuccess)
-            {
-                return BadRequest(result.Error);
-            }
-            return Ok(result);
+            return FromResult(result);
         }
     }
 }

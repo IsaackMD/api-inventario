@@ -8,7 +8,7 @@ namespace MyInventoryApp.src.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class StockController : ControllerBase
+    public class StockController : BaseController
     {
         private readonly ListStockUseCase _useCase;
 
@@ -23,10 +23,7 @@ namespace MyInventoryApp.src.API.Controllers
         public async Task<IActionResult> GetStocks()
         {
             var result = await _useCase.ExecuteAsync();
-            if (!result.IsSuccess)
-                return NotFound(new { message = result.Error });
-
-            return Ok(result);
+            return FromResult(result);
         }
 
         [HttpGet]
@@ -34,10 +31,7 @@ namespace MyInventoryApp.src.API.Controllers
         public async Task<IActionResult> GetStockProduct(Guid Id)
         {
             var result = await _useCase.ExecuteSingle(Id);
-            if (!result.IsSuccess)
-                return NotFound(new { message = result.Error });
-
-            return Ok(result);
+            return FromResult(result);
         }
 
         [HttpGet]
@@ -45,9 +39,7 @@ namespace MyInventoryApp.src.API.Controllers
         public async Task<IActionResult> GetLastMovements()
         {
             var result = await _useCase.ExecuteLastMovements();
-            if (!result.IsSuccess)
-                return NotFound(new { message = result.Error });
-            return Ok(result);
+            return FromResult(result);
         }
     }
 

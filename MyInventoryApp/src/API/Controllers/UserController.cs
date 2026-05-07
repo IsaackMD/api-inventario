@@ -7,7 +7,7 @@ namespace MyInventoryApp.src.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UserController : ControllerBase
+    public class UserController : BaseController
     {
         private readonly CreateUserUseCase _createUserUseCase;
         private readonly LoginUseCase _loginUseCase;
@@ -26,11 +26,8 @@ namespace MyInventoryApp.src.API.Controllers
         public async Task<IActionResult> CreateUser(UserDTO dto)
         {
             var result = await _createUserUseCase.Execute(dto);
-            if (!result.IsSuccess)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
+            
+            return FromResult(result);
         }
 
         [HttpPost]
@@ -42,7 +39,10 @@ namespace MyInventoryApp.src.API.Controllers
             {
                 return BadRequest(result);
             }
-            var token = result.Value.Token;
+            var token = result?.Value?.Token;
+            if(token is null)
+                return BadRequest("Error al generar el token");
+
             Response.Cookies.Append("access_token", token, new CookieOptions
             {
                 HttpOnly = true,          // 🔥 evita acceso desde JS (seguridad)
@@ -61,15 +61,12 @@ namespace MyInventoryApp.src.API.Controllers
         public async Task<IActionResult> AuthMe()
         {
             var token = Request.Cookies["access_token"];
+            if(token is null)
+                return BadRequest("Token no encontrado en las cookies");
 
             var result = await _authMeUseCase.Execute(token);
 
-            if (!result.IsSuccess)
-            {
-                return BadRequest(result);
-            }
-
-            return Ok(result.Value);
+            return FromResult(result);
         }
     }
 }

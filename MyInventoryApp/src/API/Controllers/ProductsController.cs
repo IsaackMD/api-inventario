@@ -10,7 +10,7 @@ namespace MyInventoryApp.src.API.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductsController : ControllerBase
+    public class ProductsController : BaseController
     {
 
         private readonly CreateProductUseCase _useCase;
@@ -40,20 +40,14 @@ namespace MyInventoryApp.src.API.Controllers
         public async Task<IActionResult> Create(ProductDTO dto)
         {
             var result = await _useCase.Execute(dto);
-            if (!result.IsSuccess)
-                return NotFound(new { message = result.Error });
-
-            return CreatedAtAction(nameof(GetProductoById), new { Id = result.Value.Id }, result);
+           return FromCreated(result, nameof(GetProducts));
         }
 
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
             var result = await _useCaseList.ExecuteAsync();
-            if (!result.IsSuccess)
-                return NotFound(new { message = result.Error });
-
-            return Ok(result);
+            return FromResult(result);
         }
         [HttpGet]
         [Route("ById")]
@@ -61,10 +55,7 @@ namespace MyInventoryApp.src.API.Controllers
         {
             var result = await _useGetProduct.Execute(Id);
 
-            if (!result.IsSuccess)
-                return NotFound(new { message = result.Error });
-
-            return Ok(result);
+           return FromResult(result);
         }
 
 
@@ -73,10 +64,7 @@ namespace MyInventoryApp.src.API.Controllers
         public async Task<IActionResult> IncreaseProduct([FromBody] ProductRequest request)
         {
             var result = await _useIncreaseStock.ExecuteAsync(request.ProductId, request.Quantity);
-            if (!result.IsSuccess)
-                return NotFound(new { message = result.Error });
-
-            return Ok(result);
+            return FromResult(result);
         }
 
         [HttpPost]
@@ -85,11 +73,7 @@ namespace MyInventoryApp.src.API.Controllers
         {
 
             var result = await _useDecreaseStock.ExecuteAsync(request.ProductId, request.Quantity);
-            if (!result.IsSuccess)
-                return NotFound(new { message = result.Error });
-            await _notifyLowStockUseCase.Execute(result.Value);
-
-            return Ok(result);
+            return FromResult(result);
         }
     }
 }

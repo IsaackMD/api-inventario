@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using MyInventoryApp.src.Application.Mappers;
+using MyInventoryApp.src.API.Middleware;
 using MyInventoryApp.src.Application.UseCases.AlertaLowProductCase;
 using MyInventoryApp.src.Application.UseCases.Categories;
 using MyInventoryApp.src.Application.UseCases.Firebase;
@@ -58,7 +58,7 @@ builder.Services.AddScoped<IStockMovementService, StockMovementService>();
 
 builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 
-builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddAutoMapper(cfg => { }, typeof(Program).Assembly);
 // Controllers
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -97,12 +97,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = false,
-            ValidateAudience = false,
+            ValidateIssuer = true,
+            ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"])
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"] ?? "")
             )
         };
 
@@ -126,6 +126,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+app.UseGlobalExceptionHandling();
+app.UseSecurityHeaders();
+
 app.UseRouting();
 
 app.UseCors("AllowFrontend");
