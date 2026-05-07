@@ -20,6 +20,9 @@ namespace MyInventoryApp.src.Application.UseCases.User
         }
         public async Task<Result<UserDTO>> Execute(UserDTO userDto)
         {
+            if(userDto is null)
+                return Result<UserDTO>.Failure("Necesitas mandar un cuerpo a la petición");
+
             if(userDto.Email is null)
                 return Result<UserDTO>.Failure("El correo es requerido");
             try
@@ -45,8 +48,12 @@ namespace MyInventoryApp.src.Application.UseCases.User
                 {
                     return Result<UserDTO>.Failure("Fallo al Crear el usuario");
                 }
-                userDto.Id = newUser.Id;
-                return Result<UserDTO>.Success(userDto);
+                return Result<UserDTO>.Success(new UserDTO
+                {
+                    Id = newUser.Id,
+                    Name = newUser.Name,
+                    Email = newUser.Email,  
+                });
             }
             catch
             {

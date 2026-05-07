@@ -5,8 +5,8 @@ namespace MyInventoryApp.src.Application.DTOs
     public class ProductDTO : IEntity
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
 
         public int? Stock { get; set; }
         public int? Stockmin { get; set; }

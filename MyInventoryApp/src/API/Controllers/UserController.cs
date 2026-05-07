@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyInventoryApp.src.Application.DTOs;
 using MyInventoryApp.src.Application.UseCases.User;
+using static Google.Apis.Requests.BatchRequest;
 
 namespace MyInventoryApp.src.API.Controllers
 {
@@ -39,6 +40,7 @@ namespace MyInventoryApp.src.API.Controllers
             {
                 return BadRequest(result);
             }
+
             var token = result?.Value?.Token;
             if(token is null)
                 return BadRequest("Error al generar el token");
@@ -51,9 +53,14 @@ namespace MyInventoryApp.src.API.Controllers
                 MaxAge = TimeSpan.FromHours(2)
             });
 
-            result.Value.Token = null; // No devolver el token en el cuerpo de la respuesta
-
-            return Ok(result);
+            return Ok(new
+            {
+                success = true,
+                data = new
+                {
+                    result?.Value?.user,
+                }
+            });
         }
         [Authorize]
         [HttpGet]
