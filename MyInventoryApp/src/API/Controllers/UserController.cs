@@ -55,7 +55,7 @@ namespace MyInventoryApp.src.API.Controllers
 
             return Ok(result);
         }
-
+        [Authorize]
         [HttpGet]
         [Route("auth/me")]
         public async Task<IActionResult> AuthMe()
