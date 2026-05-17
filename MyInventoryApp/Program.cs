@@ -51,6 +51,7 @@ builder.Services.AddScoped<UpdateCategoryUseCase>();
 builder.Services.AddScoped<NotifyLowStockUseCase>();
 builder.Services.AddScoped<FirebaseUseCase>();
 builder.Services.AddScoped<CreateUserUseCase>();
+builder.Services.AddScoped<EditProductUseCase>();
 builder.Services.AddScoped<LoginUseCase>();
 builder.Services.AddScoped<AuthMeUseCase>();
 builder.Services.AddScoped<ITokenValidator, TokenValidator>();
@@ -97,8 +98,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
+            ValidateIssuer = false,
+            ValidateAudience = false,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(

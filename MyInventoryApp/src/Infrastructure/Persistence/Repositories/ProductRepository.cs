@@ -31,6 +31,7 @@ public class ProductRepository : IProductRepository
     {
         return await _context.Products
             .Include(p => p.Category)
+            .Where(p => p.IsActive) // Only return active products
             .ToListAsync();
     }
 

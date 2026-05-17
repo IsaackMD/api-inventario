@@ -53,8 +53,8 @@ namespace MyInventoryApp.src.Application.UseCases.Products
             {
                 var product = new Product
                 (
-                   dto.Name,
-                   dto.Description,
+                   dto.Name ?? string.Empty,
+                   dto.Description ?? string.Empty,
                    dto.Stock ?? 0,
                    dto.Stockmin ?? 0,
                    category

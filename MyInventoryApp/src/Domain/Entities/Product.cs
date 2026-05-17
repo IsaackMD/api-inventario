@@ -13,6 +13,7 @@ namespace MyInventoryApp.src.Domain.Entities
         public Guid CategoryId { get; private set; }
         public Category Category { get; private set; }
 
+        public bool IsActive { get; private set; } = true;
         protected Product() { }
 
         public Product(string name, string description, int initialStock, int minStock, Category category)
@@ -47,5 +48,17 @@ namespace MyInventoryApp.src.Domain.Entities
 
             Stock -= quantity;
         }
+
+        public void ChangeStatus(bool isActive)
+        {
+            IsActive = isActive;
+        }
+        //public void UpdateDetails(string name, string description, int stockMin, Category category)
+        //{
+        //    Name = name;
+        //    Description = description;
+        //    StockMin = stockMin;
+        //    Category = category;
+        //}
     }
 }

@@ -20,4 +20,10 @@ namespace MyInventoryApp.src.Application.DTOs
         public Guid ProductId { get; set; }
         public int Quantity { get; set; }
     }
+
+    public class ProductStatusChangeRequest
+    {
+        public Guid ProductId { get; set; }
+        public bool IsActive { get; set; }
+    }
 }

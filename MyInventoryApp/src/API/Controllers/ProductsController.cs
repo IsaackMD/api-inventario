@@ -14,6 +14,7 @@ namespace MyInventoryApp.src.API.Controllers
     {
 
         private readonly CreateProductUseCase _useCase;
+        private readonly EditProductUseCase _useEditProduct;
         private readonly ListProduct _useCaseList;
         private readonly GetProductsUseCase _useGetProduct;
         private readonly IncreaseStockUseCase _useIncreaseStock;
@@ -21,6 +22,7 @@ namespace MyInventoryApp.src.API.Controllers
         private readonly NotifyLowStockUseCase _notifyLowStockUseCase;
         public ProductsController(
             CreateProductUseCase useCase,
+            EditProductUseCase useEditProduct,
             ListProduct useCaseList,
             GetProductsUseCase useGetProduct,
             IncreaseStockUseCase useIncreaseStock,
@@ -29,6 +31,7 @@ namespace MyInventoryApp.src.API.Controllers
             )
         {
             _useCase = useCase;
+            _useEditProduct = useEditProduct;
             _useCaseList = useCaseList;
             _useGetProduct = useGetProduct;
             _useIncreaseStock = useIncreaseStock;
@@ -40,7 +43,7 @@ namespace MyInventoryApp.src.API.Controllers
         public async Task<IActionResult> Create(ProductDTO dto)
         {
             var result = await _useCase.Execute(dto);
-           return FromCreated(result, nameof(GetProducts));
+            return FromCreated(result, nameof(GetProducts));
         }
 
         [HttpGet]
@@ -51,11 +54,11 @@ namespace MyInventoryApp.src.API.Controllers
         }
         [HttpGet]
         [Route("ById")]
-        public async Task<IActionResult> GetProductoById(Guid Id)
+        public async Task<IActionResult> GetPrductoById(Guid Id)
         {
             var result = await _useGetProduct.Execute(Id);
 
-           return FromResult(result);
+            return FromResult(result);
         }
 
 
@@ -73,6 +76,38 @@ namespace MyInventoryApp.src.API.Controllers
         {
 
             var result = await _useDecreaseStock.ExecuteAsync(request.ProductId, request.Quantity);
+            return FromResult(result);
+        }
+
+        [HttpPut]
+        [Route("")]
+        public async Task<IActionResult> EditProduct(ProductDTO dto)
+        {
+            var result = await _useEditProduct.ExecuteAsync(dto);
+            return FromResult(result);
+        }
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteProduct(Guid id)
+        {
+            Console.WriteLine($"Received request to delete product with ID: {id}");
+            var result = await _useEditProduct.ExecuteChangeStatus(new ProductStatusChangeRequest
+            {
+                ProductId = id,
+                IsActive = false
+            });
+            return FromResult(result);
+        }
+
+        [HttpPatch]
+        [Route("{id}/activate")]
+        public async Task<IActionResult> ActivateProduct(Guid id)
+        {
+            var result = await _useEditProduct.ExecuteChangeStatus(new ProductStatusChangeRequest
+            {
+                ProductId = id,
+                IsActive = true
+            });
             return FromResult(result);
         }
     }

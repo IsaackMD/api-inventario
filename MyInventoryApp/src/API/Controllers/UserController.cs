@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MyInventoryApp.src.Application.DTOs;
 using MyInventoryApp.src.Application.UseCases.User;
-using static Google.Apis.Requests.BatchRequest;
 
 namespace MyInventoryApp.src.API.Controllers
 {
@@ -27,7 +26,7 @@ namespace MyInventoryApp.src.API.Controllers
         public async Task<IActionResult> CreateUser(UserDTO dto)
         {
             var result = await _createUserUseCase.Execute(dto);
-            
+
             return FromResult(result);
         }
 
@@ -42,7 +41,7 @@ namespace MyInventoryApp.src.API.Controllers
             }
 
             var token = result?.Value?.Token;
-            if(token is null)
+            if (token is null)
                 return BadRequest("Error al generar el token");
 
             Response.Cookies.Append("access_token", token, new CookieOptions
@@ -62,13 +61,12 @@ namespace MyInventoryApp.src.API.Controllers
                 }
             });
         }
-        [Authorize]
         [HttpGet]
         [Route("auth/me")]
         public async Task<IActionResult> AuthMe()
         {
             var token = Request.Cookies["access_token"];
-            if(token is null)
+            if (token is null)
                 return BadRequest("Token no encontrado en las cookies");
 
             var result = await _authMeUseCase.Execute(token);
