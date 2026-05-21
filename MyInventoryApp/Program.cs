@@ -16,6 +16,7 @@ using MyInventoryApp.src.Infrastructure.Persistence;
 using MyInventoryApp.src.Infrastructure.Persistence.Repositories;
 using MyInventoryApp.src.Infrastructure.Service;
 using MyInventoryApp.src.Infrastructure.Service.Jwt;
+using System;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -128,6 +129,25 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    try
+    {
+        var db = services.GetRequiredService<MyInventoryDbContext>();
+
+        db.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+
+        logger.LogError(ex, "Error applying migrations");
+    }
+}
+
 app.UseGlobalExceptionHandling();
 app.UseSecurityHeaders();
 
@@ -135,42 +155,6 @@ app.UseRouting();
 
 app.UseCors("AllowFrontend");
 
-// ========================================
-// APLICAR MIGRACIONES CON RETRY ✅
-// ========================================
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
-//    var logger = services.GetRequiredService<ILogger<Program>>();
-//    var context = services.GetRequiredService<MyInventoryDbContext>();
-
-//    var retry = 0;
-//    var maxRetries = 10;
-//    var delay = TimeSpan.FromSeconds(3);
-
-//    while (retry < maxRetries)
-//    {
-//        try
-//        {
-//            logger.LogInformation($"🔄 Intento {retry + 1}/{maxRetries} - Aplicando migraciones...");
-//            context.Database.Migrate();
-//            logger.LogInformation("✅ Migraciones aplicadas exitosamente");
-//            break;
-//        }
-//        catch (Exception ex)
-//        {
-//            retry++;
-//            if (retry >= maxRetries)
-//            {
-//                logger.LogError(ex, "❌ Error al aplicar migraciones después de {MaxRetries} intentos", maxRetries);
-//                throw;
-//            }
-
-//            logger.LogWarning(ex, "⚠️ Error al conectar con la base de datos. Reintentando en {Delay} segundos...", delay.TotalSeconds);
-//            Thread.Sleep(delay);
-//        }
-//    }
-//}
 
 // Swagger middleware
 if (app.Environment.IsDevelopment())
