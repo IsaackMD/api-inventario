@@ -48,7 +48,7 @@ namespace MyInventoryApp.src.API.Controllers
             {
                 HttpOnly = true,          // 🔥 evita acceso desde JS (seguridad)
                 SameSite = SameSiteMode.Lax,
-                Secure = true,
+                Secure = false,
                 MaxAge = TimeSpan.FromHours(2)
             });
 
