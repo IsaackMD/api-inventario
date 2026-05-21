@@ -115,6 +115,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             {
                 var token = context.Request.Cookies["access_token"];
 
+                Console.WriteLine("TOKEN COOKIE:");
+                Console.WriteLine(token);
                 if (!string.IsNullOrEmpty(token))
                 {
                     context.Token = token;
