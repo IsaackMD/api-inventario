@@ -18,7 +18,7 @@ namespace MyInventoryApp.src.Application.UseCases.AlertaLowProductCase
             var result = await _repoInfo.GetLowProducts();
 
             if(!result.Any())
-                return Result<IEnumerable<AlertLowProductDTO>>.Failure("Producto de lote no encontrado.");
+                return Result<IEnumerable<AlertLowProductDTO>>.Success([]);
 
             return Result<IEnumerable<AlertLowProductDTO>>.Success(result);
         }
