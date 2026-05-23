@@ -16,7 +16,6 @@ using MyInventoryApp.src.Infrastructure.Persistence;
 using MyInventoryApp.src.Infrastructure.Persistence.Repositories;
 using MyInventoryApp.src.Infrastructure.Service;
 using MyInventoryApp.src.Infrastructure.Service.Jwt;
-using System;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -75,22 +74,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // 1. Agregar servicios CORS
+var allowedOrigins = builder.Configuration
+    .GetSection("Cors:AllowedOrigins")
+    .Get<string[]>() ?? [];
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        //policy.WithOrigins(
-        //        "http://localhost:3000",
-        //        "http://192.168.100.144:3000"
-        //      )
-        //      .AllowAnyHeader()
-        //      .AllowAnyMethod();
-        ////.AllowCredentials();
-
-        policy.WithOrigins("http://localhost:5173")
-              .AllowCredentials()
+        policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
 
