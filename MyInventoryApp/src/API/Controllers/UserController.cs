@@ -47,7 +47,7 @@ namespace MyInventoryApp.src.API.Controllers
             Response.Cookies.Append("access_token", token, new CookieOptions
             {
                 HttpOnly = true,          // 🔥 evita acceso desde JS (seguridad)
-                SameSite = SameSiteMode.Lax,
+                SameSite = SameSiteMode.None,
                 Secure = true,
                 MaxAge = TimeSpan.FromHours(2)
             });
