@@ -36,6 +36,12 @@ namespace MyInventoryApp.src.API.Controllers
             var result = await _useListCategory.ExecuteAsync();
             return FromResult(result);
         }
+        [HttpPut]
+        public async Task<IActionResult> Update(CategoryDTO dto)
+        {
+            var result = await _useUpdateCategory.Execute(dto);
+            return FromResult(result);
+        }
 
         [HttpPut]
         [Route("status")]
